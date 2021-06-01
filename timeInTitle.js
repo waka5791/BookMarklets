@@ -6,7 +6,7 @@ javascript: (function () {
         if (_chkElem === null) {
             let _div = document.createElement('link');
             _div.setAttribute('id', CheckIDName);
-            _div.text(_titleContent);
+            _div.textContent = _titleContent;
             document.body.appendChild(_div);
         } else {
             _titleContent = _chkElem.textContent;
