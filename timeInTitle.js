@@ -14,7 +14,8 @@ javascript: (function () {
         let _hour = _now.getHours();
         let _min = _now.getMinutes();
         let _sec = _now.getSeconds();
-        let _timeStr = `${_hour}時${_min}分${_sec}秒`;
+        /*let _timeStr = `${_hour}時${_min}分${_sec}秒`;*/
+        let _timeStr = "hoge";
         document.title = _timeStr + '【' + _titleContent + '】';
     };
     _updateTitle();
