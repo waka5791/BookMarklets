@@ -1,14 +1,18 @@
-javascript: (function () {
     const CheckIDName = 'DateInTitleAdded';
     let _updateTitle = function () {
         const _chkElem = document.getElementById(CheckIDName);
         let _titleContent = document.title;
         if (_chkElem === null) {
+            /*
             let element = document.createElement('div');
             element.id = CheckIDName;
             element.style.display = 'none';
             element.textContent = _titleContent;
             document.body.appendChild(element);
+            */
+            let element = $('<div>').attr('id', CheckIDName).hide();
+            element.text(_titleContent);
+            $('body').append(element);
         } else {
             _titleContent = _chkElem.textContent;
         }
@@ -19,4 +23,3 @@ javascript: (function () {
         document.title = _hour + "時" + _min + "分" + _sec + "秒" + '【' + _titleContent + '】';
     };
     _updateTitle();
-})();
