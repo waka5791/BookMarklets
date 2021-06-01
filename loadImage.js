@@ -1,15 +1,15 @@
-   
-jQuery(document).ready(function () {
+  jQuery(document).ready(function () {
+    const _baseDataUrl = "https://github.com/waka5791/BookMarklets/blob/main/img/";
     const _data = [{
         "id": 1,
-        "path": "https://github.com/waka5791/BookMarklets/blob/main/img/A.jpg?raw=true"
+        "path": "A.jpg"
     }];
-    let ulObj = $("#demo");
+    let ulObj = $("#imageList");
     let _dataLen = _data.length;
 
     for (let _idx = 0; _idx < _dataLen; _idx++) {
         _imgId = _data[_idx].id;
-        _imgPath = _data[_idx].path;
+        _imgPath = _baseDataUrl + _data[_idx].path + "?raw=true";
         let _aTag = $("<a>",
             {
                 "href": _imgPath,
