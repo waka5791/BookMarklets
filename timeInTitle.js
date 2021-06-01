@@ -1,3 +1,4 @@
+javascript: (function () {
     const CheckIDName = 'DateInTitleAdded';
     let _updateTitle = function () {
         const _chkElem = document.getElementById(CheckIDName);
@@ -17,3 +18,7 @@
         document.title = _timeStr + '【' + _titleContent + '】';
     };
     _updateTitle();
+})();
+
+
+
