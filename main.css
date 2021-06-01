@@ -1,5 +1,6 @@
 #imageList img {
-	padding: 11px;
+	margin: 10px;
+	padding: 5px;
 	background-color: #FFFFFF;
 	box-shadow: 0 3px 18px -4px rgba(0, 0, 0, 0.8);
 	width: 150px; height: 150px;
