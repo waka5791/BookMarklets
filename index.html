@@ -1,23 +1,43 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+<head>    
     <meta charset="UTF-8">
     <title>blog</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/marx-css@3.0.8/css/marx.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script>
+        const data = [
+            {
+                "id": 1,
+                "path": "https://github.com/waka5791/BookMarklets/blob/main/img/A.jpg?raw=true"
+            }
+        ];
+        let ulObj = $("#demo"),
+            len = data.length;
+
+        for (var i = 0; i < len; i++) {
+            ulObj.append($("<li>").attr({
+                "id": data[i].id
+            }).text(data[i].name));
+        }
+    </script>
 </head>
 
 <body>
     <main>
         <h1>Hello</h1>
-          <a href="https://waka5791.github.io/BookMarklets/"><button>戻る</button></a>
-        <img src="https://github.com/waka5791/BookMarklets/blob/main/img/A.jpg?raw=true">
-        <a href="https://github.com/waka5791/BookMarklets/blob/main/img/A.jpg?raw=true" data-lightbox="abc" data-title="A">
-   <img src="https://github.com/waka5791/BookMarklets/blob/main/img/A.jpg?raw=true" alt="A">
-</a>
+
+<ul id="demo"></ul>
+
+
+        <a href="https://waka5791.github.io/BookMarklets/"><button>戻る</button></a>
+        <a href="https://github.com/waka5791/BookMarklets/blob/main/img/A.jpg?raw=true" data-lightbox="abc"
+            data-title="A">
+            <img src="https://github.com/waka5791/BookMarklets/blob/main/img/A.jpg?raw=true" alt="A">
+        </a>
     </main>
 
     <script>
