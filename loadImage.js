@@ -1,20 +1,7 @@
 jQuery(document).ready(function () {
     const _baseDataUrl = "https://github.com/waka5791/BookMarklets/blob/main/img/";
-    $.getJSON("imageData.json", function (_data) {
-        /*
-        const _data = [
-            {
-                "id": 1,
-                "path": "A.jpg",
-                "group": "y"
-            },
-            {
-                "id": 2,
-                "path": "B.jpg",
-                "group": "y"
-            }
-        ];
-        */
+    $.getJSON("data.json", function (_data)
+    {
         let ulObj = $("#imageList");
         let _dataLen = _data.length;
 
