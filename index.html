@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>blog</title>
+    <title>Rough Drawings</title>
+
+    <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/13548419">
+
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -44,30 +47,53 @@
 
 <body>
 
+    <main class="container">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <div class="mx-auto" style="width: 300px;">
+                    <h1 class="stickyHeader">Rough Drawings</h1>
+                </div>
+                <div>
+                    <p class="lead text-center">鉛筆は素敵な画材</p>
+                </div>
+            </div>
+        </div>
 
 
+        <div class="row " style="background-color: #eee; position: sticky;   top: 0px;">
+            <div class="col-sm-6 text-center">
+                <div id="previewBox">
+                    <span class="fullScreenMode">FullView</span>
+                </div>
+            </div>
+            <div class="col-sm-6 mx-auto" style="width: 250px;" id="">
+                <div id="zoomBox"></div>
+            </div>
+            <div class="col-sm-12 text-center">
+                <div id="imageCaption"></div>
+            </div>
+        </div>
 
-
-    <main>
-        <h1 class="stickyHeader">Rough Drawings<span id="imageCaption"></span></h1>
 
         <div class="row">
-            <div class="col-sm-9 text-center"><div id="previewBox"></div></span></div>
-            <div class="col-sm-3" id="imageList"></div>
+            <div class="col-sm-12" id="imageList"></div>
         </div>
 
     </main>
     <footer class="text-center">
-        <p>&copy; 2021 &middot; <a href="https://twitter.com/ZweiRot" target="_blank">わか / a.k.a waka</a></p>
         <section>
-            <a href="https://jquery.com/">jQuery</a>
+            <a href="https://jquery.com/" target="_blank">jQuery</a>
             /
-            <a href="https://github.com/payalord/xZoom">xZoom</a>
+            <a href="https://github.com/payalord/xZoom" target="_blank">xZoom</a>
             /
-            <a href="https://getbootstrap.com/">Bootstrap</a>
+            <a href="http://www.fancyapps.com/fancybox/" target="_blank">fancyBox</a>
             /
-            <a href="https://fonts.google.com/specimen/Stick">Stick</a>
+            <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>
+            /
+            <a href="https://fonts.google.com/specimen/Stick" target="_blank">Stick</a>
         </section>
+        <p>&copy; 2021 &middot; <a href="https://twitter.com/ZweiRot" target="_blank">わか / a.k.a waka</a></p>
+
     </footer>
 </body>
 
