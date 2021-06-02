@@ -7,24 +7,28 @@ main {
 }
 
 .stickyHeader {
+	/*
 	position: -webkit-sticky;
 	position: sticky;
 	top: 20px;
-	display: inline-block;
-	vertical-align: middle;
+	*/
+	text-align: center;
+	display: block;
 }
 
 footer {
+	/*
 	background-color: blanchedalmond;
 	z-index: 999;
 	position: -webkit-sticky;
 	position: sticky;
 	bottom: 0;
+	*/
 }
+.container {
+	font-family: 'Stick',sans-serif;
 
-main h1 {
-	font-family: 'Stick',
-		sans-serif;
+	font-family: 'Stick',sans-serif;
 }
 
 img.xzoom-gallery {
@@ -41,16 +45,39 @@ img.xzoom-gallery {
 	display: inline-block;
 }
 
-.xzoom {
-	height: 400px;
+#imageList img.grayImage{
+	background-color: #888;
 }
 
+.xzoom{
+	height: 300px;
+}
+
+#zoomBox{
+	width: 250px;
+	height: 250px;
+}
+
+
 div#previewBox {	
-	position: -webkit-sticky;
-	position: sticky;
-	top: 120px;
+    position:relative;
+    border:1px solid #ccc;
+    display:inline-block;
+    line-height: 0;
+}
+
+.fullScreenMode {
+    position:absolute;
+    bottom:5px;
+    right:5px;
+	cursor: pointer;
 }
 
 div#previewBox img {
 	vertical-align: middle;
+}
+
+#imageCaption{
+	display:inline-block;
+	height: 20px;
 }
