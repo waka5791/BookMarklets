@@ -3,42 +3,84 @@
     "id": 1,
     "path": "A.jpg",
     "group": "y",
-    "caption":""
+    "caption": "十三機兵防衛圏 薬師寺恵A"
   },
   {
     "id": 2,
     "path": "B.jpg",
+    "caption": "十三機兵防衛圏 薬師寺恵B",
     "group": "y"
   },
   {
     "id": 3,
     "path": "C.jpg",
+    "caption": "十三機兵防衛圏 薬師寺恵C",
     "group": "y"
   },
   {
     "id": 4,
     "path": "ゆるキャン新城肇.jpg",
+    "caption": "ゆるキャン 新城肇",
+    "group": "y"
+  },
+  {
+    "id": 5,
+    "path": "Lachesis.jpg",
+    "caption": "Five Star Storyies ラキシス",
+    "group": "y"
+  },
+  {
+    "id": 6,
+    "path": "Yotsubato.jpg",
+    "caption": "よつばと！",
+    "group": "y"
+  },
+  {
+    "id": 7,
+    "path": "SuperCub.jpg",
+    "caption": "スーパーカブ",
+    "group": "y"
+  },
+  {
+    "id": 8,
+    "path": "Wingman.jpg",
+    "caption": "ウイングマン",
+    "group": "y"
+  },
+  {
+    "id": 9,
+    "path": "白朧剣の死牙馬.jpg",
+    "caption": "風魔の小次郎 白朧剣の死牙馬",
+    "group": "y"
+  },
+  {
+    "id": 10,
+    "path": "衝撃のアルベルト.jpg",
+    "caption": "衝撃のアルベルト",
+    "group": "y"
+  },
+  {
+    "id": 11,
+    "path": "MadokaMagica.jpg",
+    "caption": "まどかマギカ",
+    "group": "y"
+  },
+  {
+    "id": 12,
+    "path": "UshioAndTora.jpg",
+    "caption": "うしおととら",
+    "group": "y"
+  },
+  {
+    "id": 13,
+    "path": "NierAutomata2B.jpg",
+    "caption": "NierAutomata 2B",
+    "group": "y"
+  },
+  {
+    "id": 14,
+    "path": "ONEPIECE.jpg",
+    "caption": "ONE PIECE",
     "group": "y"
   }
-,
-    {
-      "id": 1,
-      "path": "A.jpg",
-      "group": "y"
-    },
-    {
-      "id": 2,
-      "path": "B.jpg",
-      "group": "y"
-    },
-    {
-      "id": 3,
-      "path": "C.jpg",
-      "group": "y"
-    },
-    {
-      "id": 4,
-      "path": "ゆるキャン新城肇.jpg",
-      "group": "y"
-    }
 ]
