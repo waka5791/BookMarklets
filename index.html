@@ -3,29 +3,72 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>blog</title>
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- jQuery-ui -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/marx-css@3.0.8/css/marx.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"
-        integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css"
-        integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="main.css" />
+    <!-- marx.css -->
+    <!--
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/marx-css@3.0.8/css/marx.min.css">
+    -->
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+
+    <!-- xZoom -->
+    <script type="text/javascript" src="https://unpkg.com/xzoom/dist/xzoom.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/xzoom/dist/xzoom.css" rel="stylesheet" media="all" />
+
+    <!-- fancyBox -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.1/jquery.fancybox.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.1/jquery.fancybox.min.js"></script>
+
+    <!-- -->
     <script src="loadImage.js"></script>
+    <link rel="stylesheet" href="main.css" />
+
+    <!-- web font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Stick&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+
+
+
+
     <main>
-        <h1>Hello</h1>
-        <a href="https://waka5791.github.io/BookMarklets/"><button>戻る</button></a>
-        <ul id="imageList"></ul>
+        <h1 class="stickyHeader">Rough Drawings<span id="imageCaption"></span></h1>
+
+        <div class="row">
+            <div class="col-sm-9 text-center"><div id="previewBox"></div></span></div>
+            <div class="col-sm-3" id="imageList"></div>
+        </div>
+
     </main>
+    <footer class="text-center">
+        <p>&copy; 2021 &middot; <a href="https://twitter.com/ZweiRot" target="_blank">わか / a.k.a waka</a></p>
+        <section>
+            <a href="https://jquery.com/">jQuery</a>
+            /
+            <a href="https://github.com/payalord/xZoom">xZoom</a>
+            /
+            <a href="https://getbootstrap.com/">Bootstrap</a>
+            /
+            <a href="https://fonts.google.com/specimen/Stick">Stick</a>
+        </section>
+    </footer>
 </body>
 
 </html>
