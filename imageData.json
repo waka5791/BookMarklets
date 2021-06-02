@@ -2,11 +2,43 @@
   {
     "id": 1,
     "path": "A.jpg",
-    "group": "y"
+    "group": "y",
+    "caption":""
   },
   {
     "id": 2,
     "path": "B.jpg",
     "group": "y"
+  },
+  {
+    "id": 3,
+    "path": "C.jpg",
+    "group": "y"
+  },
+  {
+    "id": 4,
+    "path": "ゆるキャン新城肇.jpg",
+    "group": "y"
   }
+,
+    {
+      "id": 1,
+      "path": "A.jpg",
+      "group": "y"
+    },
+    {
+      "id": 2,
+      "path": "B.jpg",
+      "group": "y"
+    },
+    {
+      "id": 3,
+      "path": "C.jpg",
+      "group": "y"
+    },
+    {
+      "id": 4,
+      "path": "ゆるキャン新城肇.jpg",
+      "group": "y"
+    }
 ]
