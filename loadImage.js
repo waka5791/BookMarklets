@@ -1,8 +1,9 @@
 jQuery(document).ready(function () {
     const _baseDataUrl = "https://github.com/waka5791/BookMarklets/blob/main/img/";
+    const _infoPopupClass = "infoPopup";
     $.getJSON("imageData.json", function (_data)
     {
-        let ulObj = $("#imageList");
+        let _containerObj = $("#imageList");
         let _dataLen = _data.length;
 
         for (let _idx = 0; _idx < _dataLen; _idx++) {
@@ -18,10 +19,16 @@ jQuery(document).ready(function () {
             let _imgTag = $("<img>",
                 {
                     "src": _imgPath,
-                    "alt": _imgId
+                    "alt": _imgId,
+                    "class": _infoPopupClass
                 });
             _aTag.append(_imgTag);
-            ulObj.append(_aTag);
+            _containerObj.append(_aTag);
         }
+    });
+
+    $(`.${_infoPopupClass}`).tooltip({
+        show: false,
+        hide: false
     });
 });
