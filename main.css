@@ -1,8 +1,56 @@
-#imageList img {
-	margin: 10px;
-	padding: 5px;
+body {
+	background-color: #eee;
+}
+
+main {
+	padding: 20px;
+}
+
+.stickyHeader {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 20px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+footer {
+	background-color: blanchedalmond;
+	z-index: 999;
+	position: -webkit-sticky;
+	position: sticky;
+	bottom: 0;
+}
+
+main h1 {
+	font-family: 'Stick',
+		sans-serif;
+}
+
+img.xzoom-gallery {
+	margin: 8px;
+	padding: 3px;
 	background-color: #FFFFFF;
-	box-shadow: 0 3px 18px -4px rgba(0, 0, 0, 0.8);
-	width: 150px; height: 150px;
+	/*box-shadow: 0 3px 18px -4px rgba(0, 0, 0, 0.8);*/
+	width: 100px;
+	height: 100px;
 	object-fit: cover;
+}
+
+#imageList a {
+	display: inline-block;
+}
+
+.xzoom {
+	height: 400px;
+}
+
+div#previewBox {	
+	position: -webkit-sticky;
+	position: sticky;
+	top: 120px;
+}
+
+div#previewBox img {
+	vertical-align: middle;
 }
