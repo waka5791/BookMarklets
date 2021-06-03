@@ -9,12 +9,12 @@ jQuery(document).ready(function () {
     });
     $.ajaxSetup({ async: true });
 
-    const CreateXzoomContainer = function (_data) {
+    const CreateXzoomContainer = function (_data, _isPc) {
         let _containerObj = $("#imageList");
         let _dataLen = _data.length;
         let _galleryContainer = $('<div>', { class: "xzoom-thmubs" });
 
-        if (_dataLen > 0) {
+        if (_dataLen > 0 && _isPc) {
             _imgId = _data[0].id;
 
             _imgPath = _baseDataUrl + _data[0].path;
@@ -33,7 +33,7 @@ jQuery(document).ready(function () {
             let _imgId = _data[_idx].id;
             let _dataPath = _data[_idx].path;
             let _imgPath = _baseDataUrl + _dataPath;
-            if(_dataPath.match(/^http/) != null){
+            if (_dataPath.match(/^http/) != null) {
                 _imgPath = _dataPath;
             }
             let _caption = _data[_idx].caption;
@@ -75,9 +75,7 @@ jQuery(document).ready(function () {
         _containerObj.append(_galleryContainer);
     }
 
-    const Enhancer = function () {
-        const _xzoomOption = { position: "#zoomBox", lensShape: "box", fadeIn: true, hover: false };
-        const instance = $(".xzoom, .xzoom-gallery").xzoom(_xzoomOption);
+    const Enhancer = function (_isPc) {
         let _kickFancyBox = function (event) {
             let xzoom = $(".xzoom:first").data('xzoom');
             xzoom.closezoom();
@@ -92,14 +90,22 @@ jQuery(document).ready(function () {
             event.preventDefault();
         }
 
+        $("#fullScreenMode").bind('click', function (event) {
+            _kickFancyBox(event);
+        });
+
+        if (!_isPc) {
+            return;
+        }
+        const _xzoomOption = { position: "#zoomBox", lensShape: "box", fadeIn: true, hover: false };
+        const instance = $(".xzoom, .xzoom-gallery").xzoom(_xzoomOption);
+
+
         //Integration with fancybox version 3 plugin
         $(".xzoom:first").bind('click', function (event) {
             // _kickFancyBox(event);
         });
 
-        $("#fullScreenMode").bind('click', function (event) {
-            _kickFancyBox(event);
-        });
 
         //Custom scale delta example
         let scale = 0;
@@ -163,16 +169,29 @@ jQuery(document).ready(function () {
         });
 
     }
+    const ua = navigator.userAgent;
+    let _isPc = false;
+    if (ua.indexOf('iPhone') > -1 || (ua.indexOf('Android') > -1 && ua.indexOf('Mobile') > -1)) {
+        // スマートフォン
+    } else if (ua.indexOf('iPad') > -1 || ua.indexOf('Android') > -1) {
+        // タブレット
 
-    CreateXzoomContainer(_data);
-    Enhancer();
+    } else {
+        // PC
+        _isPc = true;
+    }
+
+    $('#xzoomOptionContainer, #xzoomMainContainer').toggle(_isPc);
+
+    CreateXzoomContainer(_data, _isPc);
+    Enhancer(_isPc);
     $('#zoomBox').inviewChecker();
-    $(window).scroll(function(){
-        if($('#zoomBox').hasClass('_item_in_all')){
+    $(window).scroll(function () {
+        if ($('#zoomBox').hasClass('_item_in_all')) {
             //$('#debugConsole').text('inner ');
-        }else{
+        } else {
             //$('#debugConsole').text('outer ');
-            $('#zoomBox').css({top:$('#previewBox').offset().top});
+            $('#zoomBox').css({ top: $('#previewBox').offset().top });
         }
     });
 });
