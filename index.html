@@ -18,6 +18,11 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+        rel="stylesheet" media="all" />
+
+
+
     <!-- marx.css -->
     <!--
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/marx-css@3.0.8/css/marx.min.css">
@@ -36,22 +41,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.1/jquery.fancybox.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.1/jquery.fancybox.min.js"></script>
 
-    <!-- -->
-    <script src="loadImage.js"></script>
-    <link rel="stylesheet" href="main.css" />
-
     <!-- web font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Stick&display=swap" rel="stylesheet">
+
+
+
+
+
+    <!-- -->
+    <script src="jquery-my-util.js"></script>
+    <script src="loadImage.js"></script>
+    <link rel="stylesheet" href="main.css" />
+
 </head>
 
 <body>
-
-    <main class="container">
+    <main class="container ">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <div class="mx-auto" style="width: 300px;">
-                    <h1 class="stickyHeader">Rough Drawings</h1>
+                    <h1 class="titleHeader">Rough Drawings</h1>
                 </div>
                 <div>
                     <p class="lead text-center">鉛筆は素敵な画材</p>
@@ -59,15 +69,29 @@
             </div>
         </div>
 
-
-        <div class="row " style="background-color: #eee; position: sticky;   top: 0px;">
-            <div class="col-sm-6 text-center">
-                <div id="previewBox">
-                    <span class="fullScreenMode">FullView</span>
+        <div class="row unselectable text-center" style="background-color: #eee; position: sticky;   top: 0px;">
+            <div class="col-sm-12">
+                <div id=" ">
+                    <button type="button" class="btn  btn-outline-primary btn-sm" id="fullScreenMode">フルビュー</button>
+                    <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomOnOff">
+                        ルーペ
+                        <span id="badge2" style="margin-left:3px;" class="badge bg-success">&#10003;</span>
+                    </button>
+                    <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomBoxOnOff">
+                        ズーム窓枠
+                        <span id="badge1" style="margin-left:3px;" class="badge bg-success">&#9633;</span>
+                    </button>
+                    <span id="debugConsole"></span>
                 </div>
             </div>
-            <div class="col-sm-6 mx-auto" style="width: 250px;" id="">
-                <div id="zoomBox"></div>
+        </div>
+
+
+        <div class="row unselectable" id="XXXXX" style="background-color: #eee; position: sticky;   top: 40px;">
+            <div class="col-sm-12 text-center">
+                <div id="previewBox">
+
+                </div>
             </div>
             <div class="col-sm-12 text-center">
                 <div id="imageCaption"></div>
@@ -75,14 +99,37 @@
         </div>
 
 
-        <div class="row">
+        <div id="zoomBox" class="ui-widget-content" style="visibility:hidden;">
+        </div>
+        <script>
+            $(function () {
+                $("#zoomBox").draggable(
+                    {
+                        cursor: "grabbing",
+                        containment: "body"
+                    }
+                );
+                $("#zoomBox").resizable(
+                    {
+                        minHeight:100,
+                        minWidth:100,
+                        maxHeight:500,
+                        maxWidth:500
+                    }
+                );
+            });
+        </script>
+
+        <div class="row unselectable text-center">
             <div class="col-sm-12" id="imageList"></div>
         </div>
 
     </main>
-    <footer class="text-center">
+    <footer class="container text-center">
         <section>
             <a href="https://jquery.com/" target="_blank">jQuery</a>
+            /
+            <a href="https://jqueryui.com/" target="_blank">jQuery UI</a>
             /
             <a href="https://github.com/payalord/xZoom" target="_blank">xZoom</a>
             /
@@ -94,6 +141,7 @@
         </section>
         <p>&copy; 2021 &middot; <a href="https://twitter.com/ZweiRot" target="_blank">わか / a.k.a waka</a></p>
 
+        <p> スマホ・タブレット表示は考慮されていません。</p>
     </footer>
 </body>
 
