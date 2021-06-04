@@ -2,6 +2,10 @@ jQuery(document).ready(function () {
     const _baseDataUrl = "https://waka5791.github.io/RoughDrawings/img/";
     //const _baseDataUrl = "https://raw.githubusercontent.com/waka5791/RoughDrawings/main/img/";
     const _1pxPngData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=";
+
+    const _grayScaleButton = $('#grayScaleEffect');
+
+
     let _data = null;
     $.ajaxSetup({ async: false });
     $.getJSON("imageData.json", function (jsonData) {
@@ -49,8 +53,7 @@ jQuery(document).ready(function () {
                 });
             let _imgTag = $("<img>",
                 {
-                    "src": _imgPath,
-
+                   "src": _imgPath,
                     "class": "xzoom-gallery",
                     "xtitle": _caption,
                     "caption": _caption
@@ -68,6 +71,7 @@ jQuery(document).ready(function () {
                 'click': function () {
                     $('#imageCaption').html($(this).attr('caption'));
                     $(this).addClass('grayImage');
+                    _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
                 }
             });
 
@@ -180,32 +184,97 @@ jQuery(document).ready(function () {
         });
 
     }
+
     const ua = navigator.userAgent;
     let _isPc = false;
-    if (ua.indexOf('iPhone') > -1 || (ua.indexOf('Android') > -1 && ua.indexOf('Mobile') > -1)) {
+    const _isIPhone = (ua.indexOf('iPhone') > -1);
+    const _isAndroid = (ua.indexOf('Android') > -1);
+    const _isMobile = (ua.indexOf('Mobile') > -1);
+    const _isIPad = (ua.indexOf('iPad') > -1);
+    if (_isIPhone || _isAndroid && _isMobile) {
         // スマートフォン
-    } else if (ua.indexOf('iPad') > -1 || ua.indexOf('Android') > -1) {
+    } else if (_isIPad || _isAndroid) {
         // タブレット
-
     } else {
         // PC
         _isPc = true;
     }
+    if (!_isPc) {
+        const _pTag = $('<p>',
+            {
+                "text": 'パソコン版はルーペ機能が使えます。'
+            }
+        )
+        $('footer').append(_pTag);
+    }
 
-    $('#xzoomOptionContainer, #xzoomMainContainer').toggle(_isPc);
+    $('.xZoomContainer').toggle(_isPc);
 
     CreateXzoomContainer(_data, _isPc);
     Enhancer(_isPc);
 
     {
+        let _effected = null;
+        const _applyGrayScaleEffect = function () {
+            let defer = $.Deferred();
+
+            $('.xzoom').grayscale();
+            setTimeout(function () {
+                defer.resolve();
+            }, 500);
+            return defer.promise();
+        };
+
+        function _effectApplyInZoomBox() {
+            _effected = $('.xzoom').attr("src");
+            $('.xzoom').attr({ 'xoriginal': _effected });
+        };
+        _grayScaleButton.on('click', function () {
+            _grayScaleButton.attr({ 'disabled': true });
+            _grayScaleButton.visibleToggle(false);
+            let promise = _applyGrayScaleEffect();
+            promise.done(function () {
+                _effectApplyInZoomBox();
+            });
+        });
+    }
+    if (_isPc)
+    {
         $('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
         $(window).scroll(function () {
             if ($('#zoomBox').hasClass('_item_in_all')) {
-                //$('#debugConsole').text('inner ');
             } else {
-                //$('#debugConsole').text('outer ');
-                $('#zoomBox').css({ top: $('#previewBox').offset().top });
+                console.info($('#previewBox').offset().top);
+                //$('#zoomBox').css({ top: $('#previewBox').offset().top });
+               // $('#zoomBox').css({ top: $('#previewBox').offset().top + $('#zoomBox').height() });
+
+                $('#zoomBox').css({ top: $(window).scrollTop(), left: 0 });
             }
         });
+
+
+        function ZoomContainerControler() {
+           let _visible = true;
+            let _windowH = $(window).height();
+            let _windowW = $(window).width();
+            //$('#debugConsole').text(_windowW + "x" + _windowH   + " " + $(".xzoom").width() + "x" + $(".xzoom").height());
+            if (_isPc) {
+                if ($(".xzoom").height() > _windowH  *0.7|| $(".xzoom").width() > _windowW *0.8 ) {
+                   // $('#debugConsole').text(false);
+                    $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
+                    $('#xzoomMainContainer').addClass('invalidWindowSize');
+                } else {
+                  //  $('#debugConsole').text(true);
+                    $('#xzoomMainContainer').css({ top: '30px' });
+                    $('#xzoomMainContainer').removeClass('invalidWindowSize');
+                }
+            }
+        }
+
+        $(window).on('resize', function () {
+ 
+            ZoomContainerControler();
+        });
+        ZoomContainerControler();
     }
 });

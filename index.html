@@ -6,31 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Rough Drawings</title>
-
     <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/13548419">
 
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!-- jQuery-ui -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-        rel="stylesheet" media="all" />
-
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" media="all" />
 
 
-    <!-- marx.css -->
-    <!--
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/marx-css@3.0.8/css/marx.min.css">
-    -->
-
-
+    <!-- BootStrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 
     <!-- xZoom -->
@@ -41,12 +33,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.1/jquery.fancybox.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.1/jquery.fancybox.min.js"></script>
 
+    <!-- Colorimazer -->
+    <script src="http://colorimazer.tacyniak.fr/js/libs/jquery-colorimazer/jquery.colorimazer.min.js"></script>
+
+
     <!-- web font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Stick&display=swap" rel="stylesheet">
 
 
-
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
 
 
     <!-- -->
@@ -68,65 +65,76 @@
                 </div>
             </div>
         </div>
+        <span id="debugConsole"></span>
+            <div class="row unselectable text-center xZoomContainer" id="xzoomOptionContainer" style="background-color: #eee; position: sticky;   top: 0px;">
+                <div class="col-sm-12">
+                    <div id="optionMenu">
+                        <button type="button" class="btn  btn-outline-primary btn-sm" id="fullScreenMode">大きく表示</button>
+                        <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomOnOff">
+                            ルーペ
+                            <span id="badge2" style="margin-left:3px;" class="badge bg-success">&#10003;</span>
+                        </button>
+                        <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomBoxOnOff">
+                            ズーム窓枠
+                            <span id="badge1" style="margin-left:3px;" class="badge bg-success">&#9633;</span>
+                        </button>
+                        <button type="button" class="btn  btn-outline-primary btn-sm" id="grayScaleEffect">
+                            グレースケール
+                        </button>
 
-        <div class="row unselectable text-center" id="xzoomOptionContainer" style="background-color: #eee; position: sticky;   top: 0px;">
-            <div class="col-sm-12">
-                <div id=" ">
-                    <button type="button" class="btn  btn-outline-primary btn-sm" id="fullScreenMode">大きく表示</button>
-                    <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomOnOff">
-                        ルーペ
-                        <span id="badge2" style="margin-left:3px;" class="badge bg-success">&#10003;</span>
-                    </button>
-                    <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomBoxOnOff">
-                        ズーム窓枠
-                        <span id="badge1" style="margin-left:3px;" class="badge bg-success">&#9633;</span>
-                    </button>
-                    <span id="debugConsole"></span>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
-        <div class="row unselectable" id="xzoomMainContainer" style="background-color: #eee; position: sticky;   top: 40px;">
-            <div class="col-sm-12 text-center">
-                <div id="previewBox">
+            <div class="row unselectable xZoomContainer" id="xzoomMainContainer">
+                <div class="col-sm-12 text-center">
+                    <div id="previewBox">
 
+                    </div>
+                </div>
+
+                <div class="col-sm-12 text-center">
+                    <div id="imageCaption"></div>
                 </div>
             </div>
-            <div class="col-sm-12 text-center">
-                <div id="imageCaption"></div>
+
+
+
+            <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;">
+
             </div>
-        </div>
-
-
-        <div id="zoomBox" class="ui-widget-content" style="visibility:hidden;">
-        </div>
-        <script>
-            $(function () {
-                $("#zoomBox").draggable(
-                    {
-                        cursor: "grabbing",
-                        containment: "body"
-                    }
-                );
-                $("#zoomBox").resizable(
-                    {
-                        minHeight:100,
-                        minWidth:100,
-                        maxHeight:500,
-                        maxWidth:500
-                    }
-                );
-            });
-        </script>
+            <script>
+                $(function () {
+                    $("#zoomBox").draggable(
+                        {
+                            cursor: "grabbing",
+                            containment: "body"
+                        }
+                    );
+                    $("#zoomBox").resizable(
+                        {
+                            minHeight: 100,
+                            minWidth: 100,
+                            maxHeight: 500,
+                            maxWidth: 500
+                        }
+                    );
+                });
+            </script>
 
         <div class="row unselectable text-center">
             <div class="col-sm-12" id="imageList"></div>
         </div>
-
     </main>
+
     <footer class="container text-center">
         <section>
+            <a href="https://github.com/" target="_blank">
+                <i class="fab fa-github"></i>
+                GitHub
+            </a>
+            /
             <a href="https://jquery.com/" target="_blank">jQuery</a>
             /
             <a href="https://jqueryui.com/" target="_blank">jQuery UI</a>
@@ -135,13 +143,13 @@
             /
             <a href="http://www.fancyapps.com/fancybox/" target="_blank">fancyBox</a>
             /
-            <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>
+            <a href="https://getbootstrap.com/" target="_blank"><i class="fab fa-bootstrap"></i>Bootstrap</a>
             /
             <a href="https://fonts.google.com/specimen/Stick" target="_blank">Stick</a>
         </section>
-        <p>&copy; 2021 &middot; <a href="https://twitter.com/ZweiRot" target="_blank">わか / a.k.a waka</a></p>
+        <p>&copy; 2021 &middot; わか / a.k.a waka</p>
 
-        <p>パソコンなど画面の広い端末で利用するとルーペ機能が利用できます。</p>
+
     </footer>
 </body>
 

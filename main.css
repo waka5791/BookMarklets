@@ -15,15 +15,7 @@ h1.titleHeader {
 	display: block;
 }
 
-footer {
-	/*
-	background-color: blanchedalmond;
-	z-index: 999;
-	position: -webkit-sticky;
-	position: sticky;
-	bottom: 0;
-	*/
-}
+
 img.xzoom-gallery {
 	margin: 8px;
 	padding: 3px;
@@ -52,9 +44,15 @@ div.innerCaption {
 }
 
 .xzoom{
-	height: 500px;
+	height: 600px;
 }
 
+div#previewBox {
+	position: relative;
+	border: 1px solid #ccc;
+	display: inline-block;
+	line-height: 0;
+}
 
 #zoomBox{
 	width: 280px;
@@ -69,17 +67,23 @@ div.innerCaption {
 	opacity: 0.5;
 }
 
-div#previewBox {	
-    position:relative;
-    border:1px solid #ccc;
-    display:inline-block;
-    line-height: 0;
+#xzoomMainContainer {
+	background-color: #eee;
+	position: sticky; 
+	top: 30px;
 }
 
-#fullScreenMode, #zoomOnOff,#zoomBoxOnOff{
+.invalidWindowSize{
+	border-bottom:1px dashed gray;
+}
+
+#optionMenu button {
 	display: inline-block;
-	height: 40px;
+	height: 30px;
 	cursor: pointer;
+}
+#fullScreenMode, #zoomOnOff, #zoomBoxOnOff {
+
 	/*
 	position:absolute;
     bottom:5px;
@@ -104,13 +108,10 @@ div#previewBox img {
 user-select: none; /* Standard */
 }
 
-
-
-
-
 .fancybox-caption{
 	border: none;
 }
+
 .fancybox-caption-wrap
 {
 	text-align: center;

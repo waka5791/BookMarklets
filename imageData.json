@@ -82,5 +82,11 @@
     "path": "ONEPIECE.jpg",
     "caption": "ONE PIECE",
     "group": "y"
+  },
+  {
+    "id": 15,
+    "path": "AtackonTitan.jpg",
+    "caption": "進撃の巨人",
+    "group": "y"
   }
 ]
