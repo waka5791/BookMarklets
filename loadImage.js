@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
     const _baseDataUrl = "https://waka5791.github.io/RoughDrawings/img/";
     //const _baseDataUrl = "https://raw.githubusercontent.com/waka5791/RoughDrawings/main/img/";
-
+    const _1pxPngData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=";
     let _data = null;
     $.ajaxSetup({ async: false });
     $.getJSON("imageData.json", function (jsonData) {
@@ -69,6 +69,17 @@ jQuery(document).ready(function () {
                     $('#imageCaption').html($(this).attr('caption'));
                     $(this).addClass('grayImage');
                 }
+            });
+
+            _imgTag.on('error', function () {
+                this.error = null;
+                const _errMsg = '** Not Found. **';
+                $(this).attr("src", _1pxPngData);
+                $(this).attr("caption", _errMsg);
+                _aTag.attr("href", _1pxPngData);
+                _aTag.attr("data-caption", _errMsg);
+
+                _data[_idx].caption = _errMsg;
             });
 
         }
@@ -185,13 +196,16 @@ jQuery(document).ready(function () {
 
     CreateXzoomContainer(_data, _isPc);
     Enhancer(_isPc);
-    $('#zoomBox').inviewChecker();
-    $(window).scroll(function () {
-        if ($('#zoomBox').hasClass('_item_in_all')) {
-            //$('#debugConsole').text('inner ');
-        } else {
-            //$('#debugConsole').text('outer ');
-            $('#zoomBox').css({ top: $('#previewBox').offset().top });
-        }
-    });
+
+    {
+        $('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
+        $(window).scroll(function () {
+            if ($('#zoomBox').hasClass('_item_in_all')) {
+                //$('#debugConsole').text('inner ');
+            } else {
+                //$('#debugConsole').text('outer ');
+                $('#zoomBox').css({ top: $('#previewBox').offset().top });
+            }
+        });
+    }
 });
