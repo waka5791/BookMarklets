@@ -95,8 +95,8 @@ div#previewBox img {
 	vertical-align: middle;
 }
 
-#imageCaption{
-	display:inline-block;
+#imageCaptionA, #imageCaptionB{
+	display: inline-block;
 	height: 20px;
 }
 

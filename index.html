@@ -37,6 +37,11 @@
     <script src="https://colorimazer.tacyniak.fr/js/libs/jquery-colorimazer/jquery.colorimazer.min.js"></script>
 
 
+    <!-- Exif-js -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+    -->
+
     <!-- web font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Stick&display=swap" rel="stylesheet">
@@ -75,13 +80,17 @@
                             <span id="badge2" style="margin-left:3px;" class="badge bg-success">&#10003;</span>
                         </button>
                         <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomBoxOnOff">
-                            ズーム窓枠
+                            拡大窓枠
                             <span id="badge1" style="margin-left:3px;" class="badge bg-success">&#9633;</span>
                         </button>
                         <button type="button" class="btn  btn-outline-primary btn-sm" id="grayScaleEffect">
                             グレースケール
                         </button>
-
+                        <!--
+                        <button type="button" class="btn  btn-outline-primary btn-sm" id="exifInfoGet">
+                            Exif
+                        </button>
+                        -->
                     </div>
                 </div>
             </div>
@@ -95,8 +104,19 @@
                 </div>
 
                 <div class="col-sm-12 text-center">
-                    <div id="imageCaption"></div>
+                    <div id="imageCaptionA"></div>
                 </div>
+                <div class="col-sm-12 text-center">
+                    <div id="imageCaptionB"></div>
+                </div>
+                <div class="col-sm-12 text-center">
+                    <div id="WidthAndHeight"></div>
+                </div>
+                <!--
+    <div class="col-sm-12 text-center">
+        <div id="exifInfo"></div>
+    </div>
+                    -->
             </div>
 
 

@@ -1,36 +1,47 @@
 jQuery(document).ready(function () {
-    const _baseDataUrl = "https://waka5791.github.io/RoughDrawings/img/";
-    //const _baseDataUrl = "https://raw.githubusercontent.com/waka5791/RoughDrawings/main/img/";
-    const _1pxPngData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=";
+    const _baseDataUrl = 'img/';
+    //const _baseDataUrl = 'https://waka5791.github.io/RoughDrawings/img/';
+    //const _baseDataUrl = 'https://raw.githubusercontent.com/waka5791/RoughDrawings/main/img/';
+    const _1pxPngData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
 
     const _grayScaleButton = $('#grayScaleEffect');
 
 
     let _data = null;
     $.ajaxSetup({ async: false });
-    $.getJSON("imageData.json", function (jsonData) {
+    $.getJSON('imageData.json', function (jsonData) {
         _data = JSON.parse(JSON.stringify(jsonData));
     });
     $.ajaxSetup({ async: true });
 
     const CreateXzoomContainer = function (_data, _isPc) {
-        let _containerObj = $("#imageList");
+        let _containerObj = $('#imageList');
         let _dataLen = _data.length;
-        let _galleryContainer = $('<div>', { class: "xzoom-thmubs" });
+        let _galleryContainer = $('<div>', { class: 'xzoom-thmubs' });
 
         if (_dataLen > 0 && _isPc) {
             _imgId = _data[0].id;
 
             _imgPath = _baseDataUrl + _data[0].path;
             _imgGroup = _data[0].group;
-            let _imgTag = $("<img>",
+            let _imgTag = $('<img>',
                 {
-                    "src": _imgPath,
-                    "alt": _imgId,
-                    "class": "xzoom",
-                    "xoriginal": _imgPath
+                    'src': _imgPath,
+                    'alt': _imgId,
+                    'class': 'xzoom',
+                    'xoriginal': _imgPath,
+                    'id':'previewBoxImage'
                 });
-            $("#previewBox").append(_imgTag);
+            _imgTag.bind("load", function () {
+                var image = new Image();
+                image.src = $(this).attr('src');
+                var _w = image.width;
+                var _h = image.height;
+                _imgTag.attr('data-wxh', `${_w} x ${_h}`);
+
+                $('#WidthAndHeight').html(`${_w} x ${_h}`);
+            });
+            $('#previewBox').append(_imgTag);
         }
 
         for (let _idx = 0; _idx < _dataLen; _idx++) {
@@ -42,49 +53,55 @@ jQuery(document).ready(function () {
             }
             let _caption = _data[_idx].caption;
             if (_caption === undefined) {
-                _caption = "-";
+                _caption = '-';
             }
-            let _liTag = $('<div>', { class: "singleImageContainer" });
-            let _aTag = $("<a>",
+            let _liTag = $('<div>', { class: 'singleImageContainer' });
+            let _aTag = $('<a>',
                 {
-                    "href": _imgPath,
-                    "data-fancybox": "images",
-                    "data-caption": _caption
+                    'href': _imgPath,
+                    'data-fancybox': 'images',
+                    'data-caption': _caption
                 });
-            let _imgTag = $("<img>",
+            let _imgTag = $('<img>',
                 {
-                   "src": _imgPath,
-                    "class": "xzoom-gallery",
-                    "xtitle": _caption,
-                    "caption": _caption
+                   'src': _imgPath,
+                    'class': 'xzoom-gallery',
+                    'xtitle': _caption,
+                    'caption': _caption
                 });
 
             _liTag.append(_aTag);
             _aTag.append(_imgTag);
             _galleryContainer.append(_liTag);
 
-            let _cTag = $('<div>', { class: "innerCaption" });
+            let _cTag = $('<div>', { class: 'innerCaption' });
             _cTag.text(_idx + 1);
             _liTag.append(_cTag);
-
+            _aTag.on({
+                'click': function () {
+                    $('#imageCaptionA').html($(this).data('caption'));
+                    _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
+                    $(this).children('img').addClass('grayImage');
+                }
+            });
             _imgTag.on({
                 'click': function () {
-                    $('#imageCaption').html($(this).attr('caption'));
-                    $(this).addClass('grayImage');
-                    _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
+                 //   $('#imageCaptionA').html($(this).attr('caption'));
+                  //  $(this).addClass('grayImage');
+                  //  _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
+                },
+                'error': function () {
+                    this.error = null;
+                    const _errMsg = '** Not Found. **';
+                    $(this).attr('src', _1pxPngData);
+                    $(this).attr('caption', _errMsg);
+                    _aTag.attr('href', _1pxPngData);
+                    _aTag.attr('data-caption', _errMsg);
+
+                    _data[_idx].caption = _errMsg;
                 }
             });
 
-            _imgTag.on('error', function () {
-                this.error = null;
-                const _errMsg = '** Not Found. **';
-                $(this).attr("src", _1pxPngData);
-                $(this).attr("caption", _errMsg);
-                _aTag.attr("href", _1pxPngData);
-                _aTag.attr("data-caption", _errMsg);
-
-                _data[_idx].caption = _errMsg;
-            });
 
         }
         _containerObj.append(_galleryContainer);
@@ -92,7 +109,7 @@ jQuery(document).ready(function () {
 
     const Enhancer = function (_isPc) {
         let _kickFancyBox = function (event) {
-            let xzoom = $(".xzoom:first").data('xzoom');
+            let xzoom = $('.xzoom:first').data('xzoom');
             xzoom.closezoom();
             let i, images = new Array();
             let gallery = xzoom.gallery().ogallery;
@@ -105,19 +122,19 @@ jQuery(document).ready(function () {
             event.preventDefault();
         }
 
-        $("#fullScreenMode").bind('click', function (event) {
+        $('#fullScreenMode').bind('click', function (event) {
             _kickFancyBox(event);
         });
 
         if (!_isPc) {
             return;
         }
-        const _xzoomOption = { position: "#zoomBox", lensShape: "box", fadeIn: true, hover: false };
-        const instance = $(".xzoom, .xzoom-gallery").xzoom(_xzoomOption);
+        const _xzoomOption = { position: '#zoomBox', lensShape: 'box', fadeIn: true, hover: false };
+        const instance = $('.xzoom, .xzoom-gallery').xzoom(_xzoomOption);
 
 
         //Integration with fancybox version 3 plugin
-        $(".xzoom:first").bind('click', function (event) {
+        $('.xzoom:first').bind('click', function (event) {
             // _kickFancyBox(event);
         });
 
@@ -159,13 +176,13 @@ jQuery(document).ready(function () {
             'click': function (event) {
                 _isZoom = !_isZoom;
                 if (_isZoom) {
-                    $(".xzoom:first").trigger('mouseenter');
+                    $('.xzoom:first').trigger('mouseenter');
                     instance.closezoom();
                 } else {
 
                     //instance.eventdefault('eventmove');
                 }
-                _isZoom ? $('#badge2').html("&#10003;") : $('#badge2').html("&#9633;");
+                _isZoom ? $('#badge2').html('&#10003;') : $('#badge2').html('&#9633;');
             }
         });
 
@@ -173,18 +190,43 @@ jQuery(document).ready(function () {
             'click': function (event) {
                 $('#zoomBox').visibleToggle();
 
-                if ($('#zoomBox').css("visibility") == "visible") {
-                    $('#badge1').html("&#10003;");
+                if ($('#zoomBox').css('visibility') == 'visible') {
+                    $('#badge1').html('&#10003;');
                 } else {
-                    $('#badge1').html("&#9633;");
+                    $('#badge1').html('&#9633;');
                 }
 
             }
         });
 
-        //default zoom off
-        $('#zoomOnOff').trigger('click');
+        $('#zoomOnOff').trigger('click');//default zoom off
 
+    }
+
+
+
+    let _dmyCount = 0;
+    function getExif() {
+        const img1 = document.getElementById("previewBoxImage");
+        const makeAndModel = $("#exifInfo");
+        makeAndModel.html('');
+        let _dmyId = 'dmyImgId' + _dmyCount;
+        let _dmyImg = $('<img>', { src: img1.src, id: _dmyId });
+        _dmyCount++;
+        $('body').append(_dmyImg);
+
+        EXIF.getData(document.getElementById(_dmyId), function () {
+            if (true) {
+                let _xxx = EXIF.getTag(this, "ExifVersion");
+                let _xResolution = EXIF.getTag(this, "PixelXDimension");
+                let _yResolution = EXIF.getTag(this, "PixelYDimension");
+                makeAndModel.html(`${_xxx}   ${_xResolution} x ${_yResolution}`);
+            } else {
+                let _mdt = EXIF.getAllTags(this);
+                makeAndModel.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
+            }
+            $('#' + _dmyId).remove();
+        });
     }
 
     const ua = navigator.userAgent;
@@ -204,7 +246,7 @@ jQuery(document).ready(function () {
     if (!_isPc) {
         const _pTag = $('<p>',
             {
-                "text": 'パソコン版はルーペ機能が使えます。'
+                'text': 'パソコン版はルーペ機能が使えます。'
             }
         )
         $('footer').append(_pTag);
@@ -247,11 +289,12 @@ jQuery(document).ready(function () {
             if ($('#zoomBox').hasClass('_item_in_all')) {
             } else {
                 console.info($('#previewBox').offset().top);
-                //$('#zoomBox').css({ top: $('#previewBox').offset().top });
-               // $('#zoomBox').css({ top: $('#previewBox').offset().top + $('#zoomBox').height() });
-
-                $('#zoomBox').css({ top: $(window).scrollTop(), left: 0 });
+                $('#zoomBox').css({ top: $(window).scrollTop(), left: 50 });
             }
+        });
+
+        $('#exifInfoGet').on('click', function () {
+            getExif();
         });
 
 
@@ -259,14 +302,11 @@ jQuery(document).ready(function () {
            let _visible = true;
             let _windowH = $(window).height();
             let _windowW = $(window).width();
-            //$('#debugConsole').text(_windowW + "x" + _windowH   + " " + $(".xzoom").width() + "x" + $(".xzoom").height());
             if (_isPc) {
-                if ($(".xzoom").height() > _windowH  *0.7|| $(".xzoom").width() > _windowW *0.8 ) {
-                   // $('#debugConsole').text(false);
+                if ($('.xzoom').height() > _windowH  *0.7|| $('.xzoom').width() > _windowW *0.8 ) {
                     $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
                     $('#xzoomMainContainer').addClass('invalidWindowSize');
                 } else {
-                  //  $('#debugConsole').text(true);
                     $('#xzoomMainContainer').css({ top: '30px' });
                     $('#xzoomMainContainer').removeClass('invalidWindowSize');
                 }
@@ -274,7 +314,6 @@ jQuery(document).ready(function () {
         }
 
         $(window).on('resize', function () {
- 
             ZoomContainerControler();
         });
         ZoomContainerControler();
