@@ -2,98 +2,87 @@
   {
     "id": 1,
     "path": "A.jpg",
-    "group": "y",
     "caption": "十三機兵防衛圏<br/> 薬師寺恵A"
   },
   {
     "id": 2,
     "path": "B.jpg",
-    "caption": "十三機兵防衛圏 薬師寺恵B",
-    "group": "y"
+    "caption": "十三機兵防衛圏 薬師寺恵B"
   },
   {
     "id": 3,
     "path": "C.jpg",
-    "caption": "十三機兵防衛圏 薬師寺恵C",
-    "group": "y"
+    "caption": "十三機兵防衛圏 薬師寺恵C"
   },
   {
     "id": 4,
-    "path": "YuruCamp.jpg",
-    "caption": "ゆるキャン 新城肇",
-    "group": "y"
+    "path": "DA1FFABA-BFB8-42DA-8A9D-A0975C6C9414.jpeg",
+    "caption": "ゆるキャン 新城肇"
   },
   {
     "id": 5,
-    "path": "Lachesis.jpg",
-    "caption": "Five Star Stories ラキシス",
-    "group": "y"
+    "path": "AD7BC896-BBAE-4D0B-950B-10D0D075F81A.jpeg",
+    "caption": "Five Star Stories ラキシス"
   },
   {
     "id": 6,
     "path": "Yotsubato.jpg",
-    "caption": "よつばと！",
-    "group": "y"
+    "caption": "よつばと！"
   },
 
   {
     "id": 6,
     "path": "758ED5C1-929F-40B1-B47C-BBEDD9790BB7.jpeg",
-    "caption": "トップをねらえ！",
-    "group": "y"
+    "caption": "トップをねらえ！"
   },
   {
     "id": 7,
     "path": "SuperCub.jpg",
-    "caption": "スーパーカブ",
-    "group": "y"
+    "caption": "スーパーカブ"
   },
   {
     "id": 8,
     "path": "Wingman.jpg",
-    "caption": "ウイングマン",
-    "group": "y"
+    "caption": "ウイングマン"
   },
   {
     "id": 9,
     "path": "白朧剣の死牙馬.jpg",
-    "caption": "風魔の小次郎 白朧剣の死牙馬",
-    "group": "y"
+    "caption": "風魔の小次郎 白朧剣の死牙馬"
   },
   {
     "id": 10,
     "path": "衝撃のアルベルト.jpg",
-    "caption": "衝撃のアルベルト",
-    "group": "y"
+    "caption": "衝撃のアルベルト"
   },
   {
     "id": 11,
     "path": "AA7348E9-5E53-4BF1-8845-AE617E5DA2AD.jpeg",
-    "caption": "まどかマギカ",
-    "group": "y"
+    "caption": "まどかマギカ"
   },
   {
     "id": 12,
     "path": "01547CB9-2D8F-4E4C-B7BC-AD3FDB78628F.jpeg",
-    "caption": "うしおととら",
-    "group": "y"
+    "caption": "うしおととら"
   },
   {
     "id": 13,
     "path": "NierAutomata2B.jpg",
-    "caption": "NierAutomata 2B",
-    "group": "y"
+    "caption": "NierAutomata 2B"
   },
   {
     "id": 14,
     "path": "ONEPIECE.jpg",
-    "caption": "ONE PIECE",
-    "group": "y"
+    "caption": "ONE PIECE"
   },
   {
     "id": 15,
     "path": "AtackonTitan.jpg",
-    "caption": "進撃の巨人",
-    "group": "y"
+    "caption": "進撃の巨人"
+  },
+  {
+    "id": 15,
+    "path": "D8570F01-6FD1-474D-BC01-10F3C2E860D7.jpeg",
+    "caption": "GP02-A"
   }
 ]

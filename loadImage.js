@@ -124,7 +124,7 @@ jQuery(document).ready(function () {
 
         //Custom scale delta example
         let scale = 0;
-        const scaleDelta = 0.5;
+        const scaleDelta = 0.1;
         instance.eventscroll = function (element) {
             element.xon('mousewheel DOMMouseScroll', function (event) {
                 let delta = -event.originalEvent.detail || event.originalEvent.wheelDelta || event.xdelta;
