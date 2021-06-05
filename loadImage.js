@@ -205,61 +205,7 @@ jQuery(document).ready(function () {
 
     }
 
-
-    let _dmyCount = 0;
-    function getExif() {
-        const img1 = document.getElementById("previewBoxImage");
-
-        exifInfoContainer.html('');
-        let _dmyId = 'dmyImgId' + _dmyCount;
-        let _dmyImg = $('<img>', { src: img1.src, id: _dmyId });
-        _dmyCount++;
-        $('body').append(_dmyImg);
-
-        EXIF.getData(document.getElementById(_dmyId), function () {
-            if (true) {
-                let _maker = EXIF.getTag(this, "Make");
-                let _xxx = EXIF.getTag(this, "Model");
-                let _xResolution = EXIF.getTag(this, "PixelXDimension");
-                let _yResolution = EXIF.getTag(this, "PixelYDimension");
-                exifInfoContainer.html(`${_maker} ${_xxx}   ${_xResolution} x ${_yResolution}`);
-            } else {
-                let _mdt = EXIF.getAllTags(this);
-                exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
-            }
-            $('#' + _dmyId).remove();
-        });
-    }
-
-    const ua = navigator.userAgent;
-    let _isPc = false;
-    const _isIPhone = (ua.indexOf('iPhone') > -1);
-    const _isAndroid = (ua.indexOf('Android') > -1);
-    const _isMobile = (ua.indexOf('Mobile') > -1);
-    const _isIPad = (ua.indexOf('iPad') > -1);
-    if (_isIPhone || _isAndroid && _isMobile) {
-        // スマートフォン
-    } else if (_isIPad || _isAndroid) {
-        // タブレット
-    } else {
-        // PC
-        _isPc = true;
-    }
-    if (!_isPc) {
-        const _pTag = $('<p>',
-            {
-                'text': 'パソコン版はルーペ機能が使えます。'
-            }
-        )
-        $('footer').append(_pTag);
-    }
-
-    $('.xZoomContainer').toggle(_isPc);
-
-    CreateXzoomContainer(_data, _isPc);
-    Enhancer(_isPc);
-
-    {
+    const GrayScaleOption = function () {
         let _effected = null;
         const _applyGrayScaleEffect = function () {
             let defer = $.Deferred();
@@ -284,7 +230,61 @@ jQuery(document).ready(function () {
             });
         });
     }
-    if (_isPc) {
+
+    const ExifOption = function () {
+        const getExif = function () {
+            const img1 = document.getElementById("previewBoxImage");
+            const _dmyNum = new Date().getTime();
+            exifInfoContainer.html('');
+            let _dmyId = 'dmyImgId' + _dmyNum;
+            let _dmyImg = $('<img>', { src: img1.src, id: _dmyId });
+            $('body').append(_dmyImg);
+
+            EXIF.getData(document.getElementById(_dmyId), function () {
+                if (true) {
+                    let _maker = EXIF.getTag(this, "Make");
+                    let _model = EXIF.getTag(this, "Model");
+                    let _xResolution = EXIF.getTag(this, "PixelXDimension");
+                    let _yResolution = EXIF.getTag(this, "PixelYDimension");
+                    exifInfoContainer.html(`${_maker} ${_model}   ${_xResolution} x ${_yResolution}`);
+                } else {
+                    let _mdt = EXIF.getAllTags(this);
+                    exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
+                }
+                $('#' + _dmyId).remove();
+            });
+        }
+        $('#exifInfoGet').on('click', function () {
+            getExif();
+        });
+    }
+
+    const ua = navigator.userAgent;
+    let _isEnableXZoom = false;
+    const _isIPhone = (ua.indexOf('iPhone') > -1);
+    const _isAndroid = (ua.indexOf('Android') > -1);
+    const _isMobile = (ua.indexOf('Mobile') > -1);
+    const _isIPad = (ua.indexOf('iPad') > -1);
+    if (_isIPhone || _isAndroid && _isMobile) {
+        // スマートフォン
+    } else if (_isIPad || _isAndroid) {
+        // タブレット
+    } else {
+        // PC
+        _isEnableXZoom = true;
+    }
+    if (!_isEnableXZoom) {
+        const _pTag = $('<p>', { 'text': 'パソコン版はルーペ機能が使えます。' });
+        $('footer').append(_pTag);
+    }
+
+    $('.xZoomContainer').toggle(_isEnableXZoom);
+
+    CreateXzoomContainer(_data, _isEnableXZoom);
+    Enhancer(_isEnableXZoom);
+
+
+    if (_isEnableXZoom) {
         $('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
         $(window).scroll(function () {
             if ($('#zoomBox').hasClass('_item_in_all')) {
@@ -294,33 +294,29 @@ jQuery(document).ready(function () {
             }
         });
 
-        $('#exifInfoGet').on('click', function () {
-            getExif();
-        });
-        
-        {
-            $("#zoomBox").draggable(
-                {
-                    cursor: "grabbing",
-                    containment: "body"
-                }
-            );
-            $("#zoomBox").resizable(
-                {
-                    minHeight: 100,
-                    minWidth: 100,
-                    maxHeight: 500,
-                    maxWidth: 500
-                }
-            );
-        }
+        GrayScaleOption();
+        ExifOption();
 
+        $("#zoomBox").draggable(
+            {
+                cursor: "grabbing",
+                containment: "body"
+            }
+        );
+        $("#zoomBox").resizable(
+            {
+                minHeight: 100,
+                minWidth: 100,
+                maxHeight: 500,
+                maxWidth: 500
+            }
+        );
 
         function ZoomContainerControler() {
             let _visible = true;
             let _windowH = $(window).height();
             let _windowW = $(window).width();
-            if (_isPc) {
+            if (_isEnableXZoom) {
                 if ($('.xzoom').height() > _windowH * 0.7 || $('.xzoom').width() > _windowW * 0.8) {
                     $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
                     $('#xzoomMainContainer').addClass('invalidWindowSize');
