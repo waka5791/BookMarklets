@@ -183,10 +183,11 @@ jQuery(document).ready(function () {
 
                     //instance.eventdefault('eventmove');
                 }
+                $('#zoomBox').visibleToggle(_isZoom);
                 _isZoom ? $('#badge2').html('&#10003;') : $('#badge2').html('&#9633;');
             }
         });
-
+        /*
         $('#zoomBoxOnOff').on({
             'click': function (event) {
                 $('#zoomBox').visibleToggle();
@@ -199,7 +200,7 @@ jQuery(document).ready(function () {
 
             }
         });
-
+        */
         $('#zoomOnOff').trigger('click');//default zoom off
 
     }
@@ -296,6 +297,23 @@ jQuery(document).ready(function () {
         $('#exifInfoGet').on('click', function () {
             getExif();
         });
+        
+        {
+            $("#zoomBox").draggable(
+                {
+                    cursor: "grabbing",
+                    containment: "body"
+                }
+            );
+            $("#zoomBox").resizable(
+                {
+                    minHeight: 100,
+                    minWidth: 100,
+                    maxHeight: 500,
+                    maxWidth: 500
+                }
+            );
+        }
 
 
         function ZoomContainerControler() {

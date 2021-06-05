@@ -39,9 +39,7 @@
 
 
     <!-- Exif-js -->
-    
     <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-    
 
     <!-- web font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -57,7 +55,6 @@
     <script src="jquery-my-util.js"></script>
     <script src="loadImage.js"></script>
     <link rel="stylesheet" href="main.css" />
-
 </head>
 
 <body>
@@ -73,9 +70,8 @@
                 </div>
             </div>
         </div>
+
         <span id="debugConsole"></span>
-
-
 
         <div class="row unselectable xZoomContainer" id="xzoomMainContainer">
             <div class="col-sm-12 text-center">
@@ -83,7 +79,7 @@
 
                 </div>
             </div>
-            
+
             <div class="col-sm-12 text-center">
                 <div id="imageCaptionA"></div>
             </div>
@@ -91,11 +87,11 @@
                 <span id="imageCaptionB"></span>
                 <span id="WidthAndHeight"></span>
             </div>
-            
-    <div class="col-sm-12 text-center">
-        <div id="exifInfo"></div>
-    </div>
-                    
+
+            <div class="col-sm-12 text-center">
+                <div id="exifInfo"></div>
+            </div>
+
             <div class="row unselectable text-center xZoomContainer" id="xzoomOptionContainer"
                 style="background-color: #eee; position: sticky;   top: 0px;">
                 <div class="col-sm-12">
@@ -105,49 +101,24 @@
                             ルーペ
                             <span id="badge2" style="margin-left:3px;" class="badge bg-success">&#10003;</span>
                         </button>
+                        <!--
                         <button type="button" class="btn  btn-outline-primary btn-sm" id="zoomBoxOnOff">
                             拡大窓枠
                             <span id="badge1" style="margin-left:3px;" class="badge bg-success">&#9633;</span>
                         </button>
+                        -->
                         <button type="button" class="btn  btn-outline-primary btn-sm" id="grayScaleEffect">
                             グレースケール
                         </button>
-                                <button type="button" class="btn  btn-outline-primary btn-sm" id="exifInfoGet">
-                                    Exif
-                                </button>
+                        <button type="button" class="btn  btn-outline-primary btn-sm" id="exifInfoGet">
+                            Exif
+                        </button>
                     </div>
                 </div>
             </div>
-            
-
-
-
-
         </div>
 
-
-
-        <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;">
-
-        </div>
-        <script>
-            $(function () {
-                $("#zoomBox").draggable(
-                    {
-                        cursor: "grabbing",
-                        containment: "body"
-                    }
-                );
-                $("#zoomBox").resizable(
-                    {
-                        minHeight: 100,
-                        minWidth: 100,
-                        maxHeight: 500,
-                        maxWidth: 500
-                    }
-                );
-            });
-        </script>
+        <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;"></div>
 
         <div class="row unselectable text-center">
             <div class="col-sm-12" id="imageList"></div>
