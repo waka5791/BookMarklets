@@ -169,7 +169,6 @@ jQuery(document).ready(function () {
             }
         });
 
-
         $('#zoomBoxOnOff').on({
             'click': function (event) {
                 $('#zoomBox').visibleToggle();
@@ -182,6 +181,9 @@ jQuery(document).ready(function () {
 
             }
         });
+
+        //default zoom off
+        $('#zoomOnOff').trigger('click');
 
     }
 
