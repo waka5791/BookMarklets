@@ -33,17 +33,17 @@ jQuery(document).ready(function () {
                     'xoriginal': _imgPath,
                     'id': 'previewBoxImage'
                 });
-             
-        _imgTag.bind("load", function () {
-            var image = new Image();
-            image.src = $(this).attr('src');
-            var _w = image.width;
-            var _h = image.height;
-            _imgTag.attr('data-wxh', `${_w} x ${_h}`);
 
-            $('#WidthAndHeight').html(`${_w} x ${_h}`);
-        });
-        
+            _imgTag.bind("load", function () {
+                var image = new Image();
+                image.src = $(this).attr('src');
+                var _w = image.width;
+                var _h = image.height;
+                _imgTag.attr('data-wxh', `${_w} x ${_h}`);
+
+                $('#WidthAndHeight').html(`${_w} x ${_h}`);
+            });
+
             $('#previewBox').append(_imgTag);
         }
 
@@ -139,20 +139,21 @@ jQuery(document).ready(function () {
             // _kickFancyBox(event);
         });
 
-
-        //Custom scale delta example
-        let scale = 0;
-        const scaleDelta = 0.1;
-        instance.eventscroll = function (element) {
-            element.xon('mousewheel DOMMouseScroll', function (event) {
-                let delta = -event.originalEvent.detail || event.originalEvent.wheelDelta || event.xdelta;
-                if (delta > 0) delta = -scaleDelta; else delta = scaleDelta;
-                scale += delta;
-                if (scale < -1) scale = -1;
-                if (scale > 1) scale = 1;
-                event.xscale = scale;
-                instance.xscroll(event)
-            });
+        if (true) {
+            //Custom scale delta example
+            let scale = 0;
+            const scaleDelta = 0.1;
+            instance.eventscroll = function (element) {
+                element.xon('mousewheel DOMMouseScroll', function (event) {
+                    let delta = -event.originalEvent.detail || event.originalEvent.wheelDelta || event.xdelta;
+                    if (delta > 0) delta = -scaleDelta; else delta = scaleDelta;
+                    scale += delta;
+                    if (scale < -1) scale = -1;
+                    if (scale > 1) scale = 1;
+                    event.xscale = scale;
+                    instance.xscroll(event)
+                });
+            }
         }
 
         let _isZoom = false;
@@ -221,8 +222,8 @@ jQuery(document).ready(function () {
             $('.xzoom').attr({ 'xoriginal': _effected });
         };
         _grayScaleButton.on('click', function () {
-           // _grayScaleButton.attr({ 'disabled': true });
-           // _grayScaleButton.visibleToggle(false);
+            // _grayScaleButton.attr({ 'disabled': true });
+            // _grayScaleButton.visibleToggle(false);
             _grayScaleButton.attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
             _exifGetButton.attr({ 'disabled': true }).removeClass('btn-outline-dark').addClass('btn-dark');
             let promise = _applyGrayScaleEffect();
