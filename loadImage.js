@@ -5,7 +5,7 @@ jQuery(document).ready(function () {
     const _1pxPngData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
 
     const _grayScaleButton = $('#grayScaleEffect');
-
+    const exifInfoContainer = $("#exifInfo");
 
     let _data = null;
     $.ajaxSetup({ async: false });
@@ -30,7 +30,7 @@ jQuery(document).ready(function () {
                     'alt': _imgId,
                     'class': 'xzoom',
                     'xoriginal': _imgPath,
-                    'id':'previewBoxImage'
+                    'id': 'previewBoxImage'
                 });
             _imgTag.bind("load", function () {
                 var image = new Image();
@@ -64,7 +64,7 @@ jQuery(document).ready(function () {
                 });
             let _imgTag = $('<img>',
                 {
-                   'src': _imgPath,
+                    'src': _imgPath,
                     'class': 'xzoom-gallery',
                     'xtitle': _caption,
                     'caption': _caption
@@ -81,14 +81,15 @@ jQuery(document).ready(function () {
                 'click': function () {
                     $('#imageCaptionA').html($(this).data('caption'));
                     _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
+                    exifInfoContainer.html('');
                     $(this).children('img').addClass('grayImage');
                 }
             });
             _imgTag.on({
                 'click': function () {
-                 //   $('#imageCaptionA').html($(this).attr('caption'));
-                  //  $(this).addClass('grayImage');
-                  //  _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
+                    //   $('#imageCaptionA').html($(this).attr('caption'));
+                    //  $(this).addClass('grayImage');
+                    //  _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
                 },
                 'error': function () {
                     this.error = null;
@@ -204,12 +205,11 @@ jQuery(document).ready(function () {
     }
 
 
-
     let _dmyCount = 0;
     function getExif() {
         const img1 = document.getElementById("previewBoxImage");
-        const makeAndModel = $("#exifInfo");
-        makeAndModel.html('');
+
+        exifInfoContainer.html('');
         let _dmyId = 'dmyImgId' + _dmyCount;
         let _dmyImg = $('<img>', { src: img1.src, id: _dmyId });
         _dmyCount++;
@@ -217,13 +217,14 @@ jQuery(document).ready(function () {
 
         EXIF.getData(document.getElementById(_dmyId), function () {
             if (true) {
-                let _xxx = EXIF.getTag(this, "ExifVersion");
+                let _maker = EXIF.getTag(this, "Make");
+                let _xxx = EXIF.getTag(this, "Model");
                 let _xResolution = EXIF.getTag(this, "PixelXDimension");
                 let _yResolution = EXIF.getTag(this, "PixelYDimension");
-                makeAndModel.html(`${_xxx}   ${_xResolution} x ${_yResolution}`);
+                exifInfoContainer.html(`${_maker} ${_xxx}   ${_xResolution} x ${_yResolution}`);
             } else {
                 let _mdt = EXIF.getAllTags(this);
-                makeAndModel.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
+                exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
             }
             $('#' + _dmyId).remove();
         });
@@ -282,8 +283,7 @@ jQuery(document).ready(function () {
             });
         });
     }
-    if (_isPc)
-    {
+    if (_isPc) {
         $('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
         $(window).scroll(function () {
             if ($('#zoomBox').hasClass('_item_in_all')) {
@@ -299,11 +299,11 @@ jQuery(document).ready(function () {
 
 
         function ZoomContainerControler() {
-           let _visible = true;
+            let _visible = true;
             let _windowH = $(window).height();
             let _windowW = $(window).width();
             if (_isPc) {
-                if ($('.xzoom').height() > _windowH  *0.7|| $('.xzoom').width() > _windowW *0.8 ) {
+                if ($('.xzoom').height() > _windowH * 0.7 || $('.xzoom').width() > _windowW * 0.8) {
                     $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
                     $('#xzoomMainContainer').addClass('invalidWindowSize');
                 } else {
