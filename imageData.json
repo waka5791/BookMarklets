@@ -35,6 +35,13 @@
     "caption": "よつばと！",
     "group": "y"
   },
+
+  {
+    "id": 6,
+    "path": "758ED5C1-929F-40B1-B47C-BBEDD9790BB7.jpeg",
+    "caption": "トップをねらえ！",
+    "group": "y"
+  },
   {
     "id": 7,
     "path": "SuperCub.jpg",
@@ -67,7 +74,7 @@
   },
   {
     "id": 12,
-    "path": "UshioAndTora.jpg",
+    "path": "01547CB9-2D8F-4E4C-B7BC-AD3FDB78628F.jpeg",
     "caption": "うしおととら",
     "group": "y"
   },
