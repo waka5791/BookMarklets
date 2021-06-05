@@ -244,9 +244,10 @@ jQuery(document).ready(function () {
                 if (true) {
                     let _maker = EXIF.getTag(this, "Make");
                     let _model = EXIF.getTag(this, "Model");
+                    let _orientation = EXIF.getTag(this, "Orientation");
                     let _xResolution = EXIF.getTag(this, "PixelXDimension");
                     let _yResolution = EXIF.getTag(this, "PixelYDimension");
-                    exifInfoContainer.html(`${_maker} ${_model}   ${_xResolution} x ${_yResolution}`);
+                    exifInfoContainer.html(`${_maker} ${_model} ${_orientation}  ${_xResolution} x ${_yResolution}`);
                 } else {
                     let _mdt = EXIF.getAllTags(this);
                     exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
