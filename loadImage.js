@@ -5,6 +5,7 @@ jQuery(document).ready(function () {
     const _1pxPngData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
 
     const _grayScaleButton = $('#grayScaleEffect');
+    const _exifGetButton = $('#exifInfoGet');
     const exifInfoContainer = $("#exifInfo");
 
     let _data = null;
@@ -32,7 +33,7 @@ jQuery(document).ready(function () {
                     'xoriginal': _imgPath,
                     'id': 'previewBoxImage'
                 });
-            /*
+             
         _imgTag.bind("load", function () {
             var image = new Image();
             image.src = $(this).attr('src');
@@ -42,7 +43,7 @@ jQuery(document).ready(function () {
 
             $('#WidthAndHeight').html(`${_w} x ${_h}`);
         });
-        */
+        
             $('#previewBox').append(_imgTag);
         }
 
@@ -83,16 +84,14 @@ jQuery(document).ready(function () {
                 'click': function () {
                     $('#previewBoxImage').attr('src', _1pxPngData);//プレビューリフレッシュ、ちらつきを抑える効果を期待
                     $('#imageCaptionA').html($(this).data('caption'));
-                    _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
+                    _grayScaleButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
+                    _exifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
                     exifInfoContainer.html('');
                     $(this).children('img').addClass('grayImage');
                 }
             });
             _imgTag.on({
                 'click': function () {
-                    //   $('#imageCaptionA').html($(this).attr('caption'));
-                    //  $(this).addClass('grayImage');
-                    //  _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
                 },
                 'error': function () {
                     this.error = null;
@@ -222,8 +221,10 @@ jQuery(document).ready(function () {
             $('.xzoom').attr({ 'xoriginal': _effected });
         };
         _grayScaleButton.on('click', function () {
-            _grayScaleButton.attr({ 'disabled': true });
-            _grayScaleButton.visibleToggle(false);
+           // _grayScaleButton.attr({ 'disabled': true });
+           // _grayScaleButton.visibleToggle(false);
+            _grayScaleButton.attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
+            _exifGetButton.attr({ 'disabled': true }).removeClass('btn-outline-dark').addClass('btn-dark');
             let promise = _applyGrayScaleEffect();
             promise.done(function () {
                 _effectApplyInZoomBox();
@@ -241,13 +242,15 @@ jQuery(document).ready(function () {
             $('body').append(_dmyImg);
 
             EXIF.getData(document.getElementById(_dmyId), function () {
+                let _exifInf = '';
                 if (true) {
                     let _maker = EXIF.getTag(this, "Make");
                     let _model = EXIF.getTag(this, "Model");
                     let _orientation = '';//EXIF.getTag(this, "Orientation");
                     let _xResolution = EXIF.getTag(this, "PixelXDimension");
                     let _yResolution = EXIF.getTag(this, "PixelYDimension");
-                    exifInfoContainer.html(`${_maker} ${_model} ${_orientation} ${_xResolution} x ${_yResolution}`);
+                    _exifInf = `${_maker} ${_model} ${_orientation} ${_xResolution} x ${_yResolution}`;
+                    exifInfoContainer.html(_exifInf);
                 } else {
                     let _mdt = EXIF.getAllTags(this);
                     exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
@@ -255,8 +258,9 @@ jQuery(document).ready(function () {
                 $('#' + _dmyId).remove();
             });
         }
-        $('#exifInfoGet').on('click', function () {
+        _exifGetButton.on('click', function () {
             getExif();
+            $(this).attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
         });
     }
 
@@ -339,7 +343,7 @@ jQuery(document).ready(function () {
                     $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
                     $('#xzoomMainContainer').addClass('invalidWindowSize');
                 } else {
-                    $('#xzoomMainContainer').css({ top: '30px' });
+                    $('#xzoomMainContainer').css({ top: '40px' });
                     $('#xzoomMainContainer').removeClass('invalidWindowSize');
                 }
             }
