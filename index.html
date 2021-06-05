@@ -11,18 +11,19 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!-- jQuery-ui -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+        media="all" />
 
 
     <!-- BootStrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 
     <!-- xZoom -->
@@ -48,7 +49,8 @@
 
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+        integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
 
 
     <!-- -->
@@ -62,8 +64,8 @@
     <main class="container ">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <div class="mx-auto" style="width: 300px;">
-                    <h1 class="titleHeader">Rough Drawings</h1>
+                <div>
+                    <h1 class="titleHeader text-center">Rough Drawings</h1>
                 </div>
                 <div>
                     <p class="lead text-center">鉛筆は素敵な画材</p>
@@ -71,7 +73,30 @@
             </div>
         </div>
         <span id="debugConsole"></span>
-            <div class="row unselectable text-center xZoomContainer" id="xzoomOptionContainer" style="background-color: #eee; position: sticky;   top: 0px;">
+
+
+
+        <div class="row unselectable xZoomContainer" id="xzoomMainContainer">
+            <div class="col-sm-12 text-center">
+                <div id="previewBox">
+
+                </div>
+            </div>
+            
+            <div class="col-sm-12 text-center">
+                <div id="imageCaptionA"></div>
+            </div>
+            <div class="col-sm-12 text-center">
+                <span id="imageCaptionB"></span>
+                <span id="WidthAndHeight"></span>
+            </div>
+            <!--
+    <div class="col-sm-12 text-center">
+        <div id="exifInfo"></div>
+    </div>
+                    -->
+            <div class="row unselectable text-center xZoomContainer" id="xzoomOptionContainer"
+                style="background-color: #eee; position: sticky;   top: 0px;">
                 <div class="col-sm-12">
                     <div id="optionMenu">
                         <button type="button" class="btn  btn-outline-primary btn-sm" id="fullScreenMode">大きく表示</button>
@@ -87,61 +112,43 @@
                             グレースケール
                         </button>
                         <!--
-                        <button type="button" class="btn  btn-outline-primary btn-sm" id="exifInfoGet">
-                            Exif
-                        </button>
-                        -->
+                                <button type="button" class="btn  btn-outline-primary btn-sm" id="exifInfoGet">
+                                    Exif
+                                </button>
+                                -->
                     </div>
                 </div>
             </div>
-
-
-            <div class="row unselectable xZoomContainer" id="xzoomMainContainer">
-                <div class="col-sm-12 text-center">
-                    <div id="previewBox">
-
-                    </div>
-                </div>
-
-                <div class="col-sm-12 text-center">
-                    <div id="imageCaptionA"></div>
-                </div>
-                <div class="col-sm-12 text-center">
-                    <div id="imageCaptionB"></div>
-                </div>
-                <div class="col-sm-12 text-center">
-                    <div id="WidthAndHeight"></div>
-                </div>
-                <!--
-    <div class="col-sm-12 text-center">
-        <div id="exifInfo"></div>
-    </div>
-                    -->
-            </div>
+            
 
 
 
-            <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;">
 
-            </div>
-            <script>
-                $(function () {
-                    $("#zoomBox").draggable(
-                        {
-                            cursor: "grabbing",
-                            containment: "body"
-                        }
-                    );
-                    $("#zoomBox").resizable(
-                        {
-                            minHeight: 100,
-                            minWidth: 100,
-                            maxHeight: 500,
-                            maxWidth: 500
-                        }
-                    );
-                });
-            </script>
+        </div>
+
+
+
+        <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;">
+
+        </div>
+        <script>
+            $(function () {
+                $("#zoomBox").draggable(
+                    {
+                        cursor: "grabbing",
+                        containment: "body"
+                    }
+                );
+                $("#zoomBox").resizable(
+                    {
+                        minHeight: 100,
+                        minWidth: 100,
+                        maxHeight: 500,
+                        maxWidth: 500
+                    }
+                );
+            });
+        </script>
 
         <div class="row unselectable text-center">
             <div class="col-sm-12" id="imageList"></div>
