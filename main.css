@@ -59,7 +59,7 @@ div#previewBox {
 	height: 280px;
 	border:1px solid black;
 	
-	position:absolute;
+	position:fixed;
 	top:180px;
 	left:50px;
 
@@ -90,6 +90,13 @@ div#previewBox {
     left:5px;
 	cursor: pointer;*/
 }
+
+#topMenu{
+	position: fixed;
+	top:0px;
+	padding: 2px;
+}
+
 
 div#previewBox img {
 	vertical-align: middle;

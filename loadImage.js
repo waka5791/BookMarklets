@@ -32,15 +32,17 @@ jQuery(document).ready(function () {
                     'xoriginal': _imgPath,
                     'id': 'previewBoxImage'
                 });
-            _imgTag.bind("load", function () {
-                var image = new Image();
-                image.src = $(this).attr('src');
-                var _w = image.width;
-                var _h = image.height;
-                _imgTag.attr('data-wxh', `${_w} x ${_h}`);
+            /*
+        _imgTag.bind("load", function () {
+            var image = new Image();
+            image.src = $(this).attr('src');
+            var _w = image.width;
+            var _h = image.height;
+            _imgTag.attr('data-wxh', `${_w} x ${_h}`);
 
-                $('#WidthAndHeight').html(`${_w} x ${_h}`);
-            });
+            $('#WidthAndHeight').html(`${_w} x ${_h}`);
+        });
+        */
             $('#previewBox').append(_imgTag);
         }
 
@@ -79,6 +81,7 @@ jQuery(document).ready(function () {
             _liTag.append(_cTag);
             _aTag.on({
                 'click': function () {
+                    $('#previewBoxImage').attr('src', _1pxPngData);//プレビューリフレッシュ、ちらつきを抑える効果を期待
                     $('#imageCaptionA').html($(this).data('caption'));
                     _grayScaleButton.attr({ 'disabled': false }).visibleToggle(true);
                     exifInfoContainer.html('');
@@ -102,8 +105,6 @@ jQuery(document).ready(function () {
                     _data[_idx].caption = _errMsg;
                 }
             });
-
-
         }
         _containerObj.append(_galleryContainer);
     }
@@ -119,7 +120,7 @@ jQuery(document).ready(function () {
                 let _caption = _data[i].caption;
                 images[i] = { src: gallery[i], caption: _caption };
             }
-            $.fancybox.open(images, { loop: false }, index);
+            $.fancybox.open(images, { loop: true }, index);
             event.preventDefault();
         }
 
@@ -155,8 +156,7 @@ jQuery(document).ready(function () {
             });
         }
 
-
-        let _isZoom = true;
+        let _isZoom = false;
         instance.eventopen = function (element) {
             if (_isZoom) {
                 element.bind('mouseenter', instance.openzoom);
@@ -184,6 +184,7 @@ jQuery(document).ready(function () {
                     //instance.eventdefault('eventmove');
                 }
                 $('#zoomBox').visibleToggle(_isZoom);
+                $(this).toggleClass('btn-outline-dark btn-dark');
                 _isZoom ? $('#badge2').html('&#10003;') : $('#badge2').html('&#9633;');
             }
         });
@@ -201,7 +202,6 @@ jQuery(document).ready(function () {
             }
         });
         */
-        $('#zoomOnOff').trigger('click');//default zoom off
 
     }
 
@@ -244,10 +244,10 @@ jQuery(document).ready(function () {
                 if (true) {
                     let _maker = EXIF.getTag(this, "Make");
                     let _model = EXIF.getTag(this, "Model");
-                    let _orientation = EXIF.getTag(this, "Orientation");
+                    let _orientation = '';//EXIF.getTag(this, "Orientation");
                     let _xResolution = EXIF.getTag(this, "PixelXDimension");
                     let _yResolution = EXIF.getTag(this, "PixelYDimension");
-                    exifInfoContainer.html(`${_maker} ${_model} ${_orientation}  ${_xResolution} x ${_yResolution}`);
+                    exifInfoContainer.html(`${_maker} ${_model} ${_orientation} ${_xResolution} x ${_yResolution}`);
                 } else {
                     let _mdt = EXIF.getAllTags(this);
                     exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
@@ -279,21 +279,38 @@ jQuery(document).ready(function () {
         $('footer').append(_pTag);
     }
 
-    $('.xZoomContainer').toggle(_isEnableXZoom);
+    $('.xZoomContainer, #topMenu').toggle(_isEnableXZoom);
 
     CreateXzoomContainer(_data, _isEnableXZoom);
     Enhancer(_isEnableXZoom);
 
 
     if (_isEnableXZoom) {
-        $('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
+        //$('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
+        let timer = false;
         $(window).scroll(function () {
+            /*
             if ($('#zoomBox').hasClass('_item_in_all')) {
             } else {
                 console.info($('#previewBox').offset().top);
                 $('#zoomBox').css({ top: $(window).scrollTop(), left: 50 });
             }
+*/
+
+            $("#zoomBox").draggable('disable');
+            if (timer !== false) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(function () {
+                $("#zoomBox").draggable('enable');
+            }, 1000);
         });
+
+        $('#previewOnOff').on('click', function () {
+            $(this).toggleClass('btn-outline-dark btn-dark');
+            $('#xzoomMainContainer').toggle();
+        });
+
 
         GrayScaleOption();
         ExifOption();
