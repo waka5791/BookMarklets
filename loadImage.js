@@ -24,14 +24,16 @@ jQuery(document).ready(function () {
             _imgId = _data[0].id;
 
             _imgPath = _baseDataUrl + _data[0].path;
+            _imgOrignalPath = _baseDataUrl + _data[0].path;
             _imgGroup = _data[0].group;
             let _imgTag = $('<img>',
                 {
                     'src': _imgPath,
                     'alt': _imgId,
                     'class': 'xzoom',
-                    'xoriginal': _imgPath,
-                    'id': 'previewBoxImage'
+                    'xoriginal': _imgOrignalPath,
+                    'id': 'previewBoxImage',
+                    //'xpreview': _imgOrignalPath
                 });
 
             _imgTag.bind("load", function () {
@@ -51,6 +53,7 @@ jQuery(document).ready(function () {
             let _imgId = _data[_idx].id;
             let _dataPath = _data[_idx].path;
             let _imgPath = _baseDataUrl + _dataPath;
+            let _imgOrignalPath = _baseDataUrl + _dataPath;
             if (_dataPath.match(/^http/) != null) {
                 _imgPath = _dataPath;
             }
@@ -61,7 +64,7 @@ jQuery(document).ready(function () {
             let _liTag = $('<div>', { class: 'singleImageContainer' });
             let _aTag = $('<a>',
                 {
-                    'href': _imgPath,
+                    'href': _imgOrignalPath,
                     'data-fancybox': 'images',
                     'data-caption': _caption
                 });
@@ -70,7 +73,8 @@ jQuery(document).ready(function () {
                     'src': _imgPath,
                     'class': 'xzoom-gallery',
                     'xtitle': _caption,
-                    'caption': _caption
+                    'caption': _caption,
+                    //'xpreview': _imgOrignalPath
                 });
 
             _liTag.append(_aTag);
