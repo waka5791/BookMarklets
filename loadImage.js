@@ -8,6 +8,7 @@ jQuery(document).ready(function () {
     const _exifGetButton = $('#exifInfoGet');
     const exifInfoContainer = $("#exifInfo");
 
+    let _isZoom = false;
     let _data = null;
     $.ajaxSetup({ async: false });
     $.getJSON('imageData.json', function (jsonData) {
@@ -125,6 +126,11 @@ jQuery(document).ready(function () {
                     _exifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
                     exifInfoContainer.html('');
                     $(this).children('img').addClass('grayImage');
+                },
+                'mouseleave': function () {
+
+                    $('.xactive').trigger('click');
+
                 }
             });
             _imgTag.on({
@@ -142,8 +148,8 @@ jQuery(document).ready(function () {
                     _data[_idx].caption.a = _errMsg;
                 }
             });
-           // let _x = { "caption": { "a": _caption, "b": "", "c": "" }, "image": _image };
-           // _newData[_idx] = _x;
+            // let _x = { "caption": { "a": _caption, "b": "", "c": "" }, "image": _image };
+            // _newData[_idx] = _x;
         }
         _containerObj.append(_galleryContainer);
 
@@ -200,7 +206,6 @@ jQuery(document).ready(function () {
             }
         }
 
-        let _isZoom = false;
         instance.eventopen = function (element) {
             if (_isZoom) {
                 element.bind('mouseenter', instance.openzoom);
@@ -221,15 +226,16 @@ jQuery(document).ready(function () {
             'click': function (event) {
                 _isZoom = !_isZoom;
                 if (_isZoom) {
-                    $('.xzoom:first').trigger('mouseenter');
+                    //$('.xzoom:first').trigger('mouseenter');
+
+                    //  $('.xactive').trigger('click');
+
                     instance.closezoom();
                 } else {
-
                     //instance.eventdefault('eventmove');
                 }
                 $('#zoomBox').visibleToggle(_isZoom);
                 $(this).toggleClass('btn-outline-dark btn-dark');
-                _isZoom ? $('#badge2').html('&#10003;') : $('#badge2').html('&#9633;');
             }
         });
         /*
@@ -262,10 +268,10 @@ jQuery(document).ready(function () {
                 exifInfoContainer.html('');
                 let _dmyId = 'dmyImgId' + _dmyNum;
                 let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
-              //  $('body').append(_dmyImg);
+                //  $('body').append(_dmyImg);
                 _dmyImg.grayscale();
                 setTimeout(function () {
-                    $('#previewBoxImage').attr('src',_dmyImg.attr('src'));
+                    $('#previewBoxImage').attr('src', _dmyImg.attr('src'));
                     defer.resolve();
                 }, 500);
                 return defer.promise();
@@ -307,22 +313,22 @@ jQuery(document).ready(function () {
             $('body').append(_dmyImg);
             setTimeout(function () {
 
-            EXIF.getData(document.getElementById(_dmyId), function () {
-                let _exifInf = '';
-                if (true) {
-                    let _maker = EXIF.getTag(this, "Make");
-                    let _model = EXIF.getTag(this, "Model");
-                    let _orientation = '';//EXIF.getTag(this, "Orientation");
-                    let _xResolution = EXIF.getTag(this, "PixelXDimension");
-                    let _yResolution = EXIF.getTag(this, "PixelYDimension");
-                    _exifInf = `${_maker} ${_model} ${_orientation} ${_xResolution} x ${_yResolution}`;
-                    exifInfoContainer.html(_exifInf);
-                } else {
-                    let _mdt = EXIF.getAllTags(this);
-                    exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
-                }
-                $('#' + _dmyId).remove();
-            });
+                EXIF.getData(document.getElementById(_dmyId), function () {
+                    let _exifInf = '';
+                    if (true) {
+                        let _maker = EXIF.getTag(this, "Make");
+                        let _model = EXIF.getTag(this, "Model");
+                        let _orientation = '';//EXIF.getTag(this, "Orientation");
+                        let _xResolution = EXIF.getTag(this, "PixelXDimension");
+                        let _yResolution = EXIF.getTag(this, "PixelYDimension");
+                        _exifInf = `${_maker} ${_model} ${_orientation} ${_xResolution} x ${_yResolution}`;
+                        exifInfoContainer.html(_exifInf);
+                    } else {
+                        let _mdt = EXIF.getAllTags(this);
+                        exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
+                    }
+                    $('#' + _dmyId).remove();
+                });
             }, 500);
         }
         _exifGetButton.on('click', function () {
