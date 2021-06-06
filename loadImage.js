@@ -15,62 +15,95 @@ jQuery(document).ready(function () {
     });
     $.ajaxSetup({ async: true });
 
+    const GetImagePathData = function (_singleData) {
+        let _image = _singleData.image;
+        let _dataPath = _singleData.path;
+        let _imgTnPath = _baseDataUrl + _dataPath;
+        let _imgOrignalPath = _baseDataUrl + _dataPath;
+        let _imgPreviewPath = _baseDataUrl + _dataPath;
+        if (_image) {
+            _imgTnPath = _baseDataUrl + _image.t;
+            _imgOrignalPath = _baseDataUrl + _image.o;
+            _imgPreviewPath = _baseDataUrl + _image.p;
+        }
+        let _imagePathData = { "o": _imgOrignalPath, "p": _imgPreviewPath, "t": _imgTnPath };
+        return _imagePathData;
+    }
+
     const CreateXzoomContainer = function (_data, _isPc) {
         let _containerObj = $('#imageList');
         let _dataLen = _data.length;
         let _galleryContainer = $('<div>', { class: 'xzoom-thmubs' });
 
         if (_dataLen > 0 && _isPc) {
-            _imgId = _data[0].id;
-
-            _imgPath = _baseDataUrl + _data[0].path;
-            _imgOrignalPath = _baseDataUrl + _data[0].path;
-            _imgGroup = _data[0].group;
+            let _image = GetImagePathData(_data[0]);
             let _imgTag = $('<img>',
                 {
-                    'src': _imgPath,
-                    'alt': _imgId,
+                    'src': _image.p,
+                    'alt': _image.t,
                     'class': 'xzoom',
-                    'xoriginal': _imgOrignalPath,
+                    'xoriginal': _image.o,
                     'id': 'previewBoxImage',
                     //'xpreview': _imgOrignalPath
                 });
 
             _imgTag.bind("load", function () {
-                var image = new Image();
+                let image = new Image();
                 image.src = $(this).attr('src');
-                var _w = image.width;
-                var _h = image.height;
+                let _w = image.width;
+                let _h = image.height;
                 _imgTag.attr('data-wxh', `${_w} x ${_h}`);
 
                 $('#WidthAndHeight').html(`${_w} x ${_h}`);
             });
 
+            _imgTag.on({
+                'error': function () {
+                    this.error = null;
+                    $(this).attr('src', _1pxPngData);
+                }
+            });
+
             $('#previewBox').append(_imgTag);
         }
-
+        let _newData = [];
         for (let _idx = 0; _idx < _dataLen; _idx++) {
-            let _imgId = _data[_idx].id;
+            /*
+            let _image = _data[_idx].image;
             let _dataPath = _data[_idx].path;
-            let _imgPath = _baseDataUrl + _dataPath;
+            let _imgTnPath = _baseDataUrl + _dataPath;
             let _imgOrignalPath = _baseDataUrl + _dataPath;
-            if (_dataPath.match(/^http/) != null) {
-                _imgPath = _dataPath;
+            let _imgPreviewPath = _baseDataUrl + _dataPath;
+            if (_image) {
+                _imgTnPath = _baseDataUrl + _image.t;
+                _imgOrignalPath = _baseDataUrl + _image.o;
+                _imgPreviewPath = _baseDataUrl + _image.p;
             }
-            let _caption = _data[_idx].caption;
+
+            if (_dataPath.match(/^http/) != null) {
+                _imgTnPath = _dataPath;
+            }
+            */
+            let _image = GetImagePathData(_data[_idx]);
+            let _caption = _data[_idx].caption.a;
             if (_caption === undefined) {
                 _caption = '-';
             }
+
+
+
+
             let _liTag = $('<div>', { class: 'singleImageContainer' });
             let _aTag = $('<a>',
                 {
-                    'href': _imgOrignalPath,
+                    'href': _image.o,
                     'data-fancybox': 'images',
                     'data-caption': _caption
                 });
             let _imgTag = $('<img>',
                 {
-                    'src': _imgPath,
+                    'src': _image.t,
+                    'xpreview': _image.p,
                     'class': 'xzoom-gallery',
                     'xtitle': _caption,
                     'caption': _caption,
@@ -101,15 +134,22 @@ jQuery(document).ready(function () {
                     this.error = null;
                     const _errMsg = '** Not Found. **';
                     $(this).attr('src', _1pxPngData);
+                    $(this).attr('xpreview', _1pxPngData);
                     $(this).attr('caption', _errMsg);
                     _aTag.attr('href', _1pxPngData);
                     _aTag.attr('data-caption', _errMsg);
 
-                    _data[_idx].caption = _errMsg;
+                    _data[_idx].caption.a = _errMsg;
                 }
             });
+           // let _x = { "caption": { "a": _caption, "b": "", "c": "" }, "image": _image };
+           // _newData[_idx] = _x;
         }
         _containerObj.append(_galleryContainer);
+
+
+
+        // $('#debugConsole').html(JSON.stringify(_newData,null,2));
     }
 
     const Enhancer = function (_isPc) {
@@ -120,7 +160,7 @@ jQuery(document).ready(function () {
             let gallery = xzoom.gallery().ogallery;
             let index = xzoom.gallery().index;
             for (i in gallery) {
-                let _caption = _data[i].caption;
+                let _caption = _data[i].caption.a;
                 images[i] = { src: gallery[i], caption: _caption };
             }
             $.fancybox.open(images, { loop: true }, index);
@@ -214,11 +254,29 @@ jQuery(document).ready(function () {
         const _applyGrayScaleEffect = function () {
             let defer = $.Deferred();
 
-            $('.xzoom').grayscale();
-            setTimeout(function () {
-                defer.resolve();
-            }, 500);
-            return defer.promise();
+            if (true) {
+                const _originalImage = $('#previewBoxImage').attr('xoriginal');
+                const _imageSrc = _originalImage
+
+                const _dmyNum = new Date().getTime();
+                exifInfoContainer.html('');
+                let _dmyId = 'dmyImgId' + _dmyNum;
+                let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
+              //  $('body').append(_dmyImg);
+                _dmyImg.grayscale();
+                setTimeout(function () {
+                    $('#previewBoxImage').attr('src',_dmyImg.attr('src'));
+                    defer.resolve();
+                }, 500);
+                return defer.promise();
+            } else {
+                $('.xzoom').grayscale();
+                setTimeout(function () {
+                    defer.resolve();
+                }, 500);
+                return defer.promise();
+            }
+
         };
 
         function _effectApplyInZoomBox() {
@@ -239,12 +297,15 @@ jQuery(document).ready(function () {
 
     const ExifOption = function () {
         const getExif = function () {
-            const img1 = document.getElementById("previewBoxImage");
+            const _originalImage = $('#previewBoxImage').attr('xoriginal');
+            const _imageSrc = _originalImage
+
             const _dmyNum = new Date().getTime();
             exifInfoContainer.html('');
             let _dmyId = 'dmyImgId' + _dmyNum;
-            let _dmyImg = $('<img>', { src: img1.src, id: _dmyId });
+            let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             $('body').append(_dmyImg);
+            setTimeout(function () {
 
             EXIF.getData(document.getElementById(_dmyId), function () {
                 let _exifInf = '';
@@ -262,6 +323,7 @@ jQuery(document).ready(function () {
                 }
                 $('#' + _dmyId).remove();
             });
+            }, 500);
         }
         _exifGetButton.on('click', function () {
             getExif();
