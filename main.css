@@ -106,8 +106,13 @@ div#previewBox img {
 }
 
 #imageCaptionA, #imageCaptionB{
+	padding: 5px;
 	display: inline-block;
 	height: 20px;
+}
+
+#imageCaptionA{
+	font-weight: bold;
 }
 
 .unselectable
@@ -117,6 +122,7 @@ div#previewBox img {
 -ms-user-select: none; /* IE10+/Edge */
 user-select: none; /* Standard */
 }
+
 
 
 

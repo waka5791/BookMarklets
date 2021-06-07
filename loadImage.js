@@ -2,17 +2,18 @@ jQuery(document).ready(function () {
     const _baseDataUrl = 'img/';
     //const _baseDataUrl = 'https://waka5791.github.io/RoughDrawings/img/';
     //const _baseDataUrl = 'https://raw.githubusercontent.com/waka5791/RoughDrawings/main/img/';
-    const _1pxPngData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
+    const Fake1pxPngData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQI12NgYAAAAAMAASDVlMcAAAAASUVORK5CYII=';
 
-    const _grayScaleButton = $('#grayScaleEffect');
-    const _exifGetButton = $('#exifInfoGet');
-    const exifInfoContainer = $("#exifInfo");
+    const GrayScaleButton = $('#grayScaleEffect');
+    const ExifGetButton = $('#exifInfoGet');
+    const ExifInfoContainer = $("#exifInfo");
+    const ZoomBoxFrame = $('#zoomBox');
 
     let _isZoom = false;
-    let _data = null;
+    let ImageDataAry = null;
     $.ajaxSetup({ async: false });
     $.getJSON('imageData.json', function (jsonData) {
-        _data = JSON.parse(JSON.stringify(jsonData));
+        ImageDataAry = JSON.parse(JSON.stringify(jsonData));
     });
     $.ajaxSetup({ async: true });
 
@@ -47,14 +48,13 @@ jQuery(document).ready(function () {
                 let _w = image.width;
                 let _h = image.height;
                 $(this).attr('data-wxh', `${_w} x ${_h}`);
-                //   $('#previewBox').css({ width: _w*0.5, height: _h*0.5 });
-                $('#WidthAndHeight').html(`${_w} x ${_h}`);
+                //$('#WidthAndHeight').html(`${_w} x ${_h}`);
             });
 
             _imgTag.on({
                 'error': function () {
                     this.error = null;
-                    $(this).attr('src', _1pxPngData);
+                    $(this).attr('src', Fake1pxPngData);
                 }
             });
 
@@ -67,20 +67,21 @@ jQuery(document).ready(function () {
             if (_caption === undefined) {
                 _caption = '-';
             }
+            _data[_idx].caption.fancybox = _caption + '<br>' + _data[_idx].caption.b;
             let _liTag = $('<div>', { class: 'singleImageContainer' });
             let _aTag = $('<a>',
                 {
                     'href': _image.o,
                     'data-fancybox': 'images',
-                    'data-caption': _caption
+                    'data-caption': _caption,
+                    'title': _caption,
+                    'data-idx': _idx
                 });
             let _imgTag = $('<img>',
                 {
                     'src': _image.t,
                     'xpreview': _image.p,
-                    'class': 'xzoom-gallery',
-                    'xtitle': _caption,
-                    'caption': _caption
+                    'class': 'xzoom-gallery'
                 });
 
             _liTag.append(_aTag);
@@ -93,10 +94,14 @@ jQuery(document).ready(function () {
                 _aTag.on({
                     'click': function () {
                         //  $('#previewBoxImage').attr('src', _1pxPngData);//プレビューリフレッシュ、ちらつきを抑える効果を期待
-                        $('#imageCaptionA').html($(this).data('caption'));
-                        _grayScaleButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
-                        _exifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
-                        exifInfoContainer.html('');
+                        //$('#imageCaptionA').text($(this).data('caption'));
+                        let _idx = $(this).data('idx');
+                        $('#imageCaptionA').text(_data[_idx].caption.a);
+                        $('#imageCaptionB').text(_data[_idx].caption.b);
+
+                        GrayScaleButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
+                        ExifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
+                        ExifInfoContainer.html('');
                         $(this).children('img').addClass('grayImage');
                     }
                 });
@@ -104,13 +109,13 @@ jQuery(document).ready(function () {
                     'error': function () {
                         this.error = null;
                         const _errMsg = '** Not Found. **';
-                        $(this).attr('src', _1pxPngData);
-                        $(this).attr('xpreview', _1pxPngData);
+                        $(this).attr('src', Fake1pxPngData);
+                        $(this).attr('xpreview', Fake1pxPngData);
                         $(this).attr('caption', _errMsg);
-                        _aTag.attr('href', _1pxPngData);
+                        _aTag.attr('href', Fake1pxPngData);
                         _aTag.attr('data-caption', _errMsg);
 
-                        _data[_idx].caption.a = _errMsg;
+                        _data[_idx].caption.fancybox = _errMsg;
                     }
                 });
             }
@@ -132,13 +137,14 @@ jQuery(document).ready(function () {
         //(!instance.currentHash && !(item.type === "inline" || item.type === "html") ? item.origSrc || item.src : false) || window.location
         $.fancybox.defaults.buttons = [
             "zoom",
-            "share",
             "slideShow",
             "fullScreen",
             "download",
+            "share",
             "thumbs",
             "close"
         ];
+
         if (!_isPc) {
             return;
         }
@@ -153,8 +159,9 @@ jQuery(document).ready(function () {
             let _xzoomCurIdx = xzoom.gallery().index;
 
             for (_idx in _gallery) {
-                let _caption = _data[_idx].caption.a;
-                images[_idx] = { src: _gallery[_idx], caption: _caption };
+                let _caption = ImageDataAry[_idx].caption.fancybox;
+                let _hash = `images`;
+                images[_idx] = { src: _gallery[_idx], caption: _caption, hash: _hash };
             }
 
             $.fancybox.open(images, {}, _xzoomCurIdx);
@@ -213,7 +220,7 @@ jQuery(document).ready(function () {
                 } else {
                     //instance.eventdefault('eventmove');
                 }
-                $('#zoomBox').visibleToggle(_isZoom);
+                ZoomBoxFrame.visibleToggle(_isZoom);
                 $(this).toggleClass('btn-outline-dark btn-dark');
             }
         });
@@ -241,7 +248,7 @@ jQuery(document).ready(function () {
             const _imageSrc = _originalImage
 
             const _dmyNum = new Date().getTime();
-            exifInfoContainer.html('');
+            ExifInfoContainer.html('');
             let _dmyId = 'dmyImgId' + _dmyNum;
             let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             //  $('body').append(_dmyImg);
@@ -256,9 +263,9 @@ jQuery(document).ready(function () {
             _effected = $('.xzoom').attr("src");
             $('.xzoom').attr({ 'xoriginal': _effected });
         };
-        _grayScaleButton.on('click', function () {
-            _grayScaleButton.attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
-            _exifGetButton.attr({ 'disabled': true }).removeClass('btn-outline-dark').addClass('btn-dark');
+        GrayScaleButton.on('click', function () {
+            GrayScaleButton.attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
+            ExifGetButton.attr({ 'disabled': true }).removeClass('btn-outline-dark').addClass('btn-dark');
             let promise = _applyGrayScaleEffect();
             promise.done(function () {
                 _effectApplyInZoomBox();
@@ -272,7 +279,7 @@ jQuery(document).ready(function () {
             const _imageSrc = _originalImage;
 
             const _dmyNum = new Date().getTime();
-            exifInfoContainer.html('');
+            ExifInfoContainer.html('');
             let _dmyId = 'dmyImgId' + _dmyNum;
             let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             $('body').append(_dmyImg);
@@ -285,16 +292,16 @@ jQuery(document).ready(function () {
                         let _xResolution = EXIF.getTag(this, "PixelXDimension");
                         let _yResolution = EXIF.getTag(this, "PixelYDimension");
                         _exifInf = `${_maker} ${_model} ${_xResolution} x ${_yResolution}`;
-                        exifInfoContainer.html(_exifInf);
+                        ExifInfoContainer.html(_exifInf);
                     } else {
                         let _mdt = EXIF.getAllTags(this);
-                        exifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
+                        ExifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
                     }
                     $('#' + _dmyId).remove();
                 });
             }, 500);
         }
-        _exifGetButton.on('click', function () {
+        ExifGetButton.on('click', function () {
             getExif();
             $(this).attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
         });
@@ -321,7 +328,7 @@ jQuery(document).ready(function () {
 
     $('.xZoomContainer, #topMenu').toggle(_isEnableXZoom);
 
-    CreateXzoomContainer(_data, _isEnableXZoom);
+    CreateXzoomContainer(ImageDataAry, _isEnableXZoom);
     Enhancer(_isEnableXZoom);
 
 
@@ -329,46 +336,47 @@ jQuery(document).ready(function () {
         //$('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
         let timer = false;
         $(window).scroll(function () {
-            /*
-            if ($('#zoomBox').hasClass('_item_in_all')) {
-            } else {
-                console.info($('#previewBox').offset().top);
-                $('#zoomBox').css({ top: $(window).scrollTop(), left: 50 });
-            }
-*/
-
-            $("#zoomBox").draggable('disable');
+            ZoomBoxFrame.draggable('disable');
             if (timer !== false) {
                 clearTimeout(timer);
             }
             timer = setTimeout(function () {
-                $("#zoomBox").draggable('enable');
+                ZoomBoxFrame.draggable('enable');
             }, 1000);
         });
 
         $('#previewOnOff').on('click', function () {
             $(this).toggleClass('btn-outline-dark btn-dark');
             $('#xzoomMainContainer').toggle();
+            let _isVisible = $('#xzoomMainContainer').is(':visible');
+            if (_isZoom) {
+                ZoomBoxFrame.toggle(_isVisible);
+            }
         });
 
 
         GrayScaleOption();
         ExifOption();
 
-        $("#zoomBox").draggable(
-            {
-                cursor: "grabbing",
-                containment: "body"
+        ZoomBoxFrame.css({ 'z-index': 99, 'opacity': '0' });
+        ZoomBoxFrame.on({
+            'mouseenter': function () {
+                $(this).css('opacity', '0.5');
+            },
+            'mouseleave': function () {
+                $(this).css('opacity', '0');
             }
-        );
-        $("#zoomBox").resizable(
-            {
-                minHeight: 100,
-                minWidth: 100,
-                maxHeight: 500,
-                maxWidth: 500
-            }
-        );
+        });
+        ZoomBoxFrame.draggable({
+            cursor: "grabbing",
+            containment: "body"
+        });
+        ZoomBoxFrame.resizable({
+            minHeight: 100,
+            minWidth: 100,
+            maxHeight: 500,
+            maxWidth: 500
+        });
 
         function ZoomContainerControler() {
             let _visible = true;
