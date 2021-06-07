@@ -44,7 +44,8 @@ div.innerCaption {
 }
 
 .xzoom{
-	height: 600px;
+
+	height: 500px;
 }
 
 div#previewBox {
@@ -52,6 +53,8 @@ div#previewBox {
 	border: 1px solid #ccc;
 	display: inline-block;
 	line-height: 0;
+
+	box-shadow: 0 5px 18px -4px rgb(10 10 10 / 80%);
 }
 
 #zoomBox{
@@ -115,6 +118,9 @@ div#previewBox img {
 user-select: none; /* Standard */
 }
 
+
+
+/* Fancy Box */
 .fancybox-caption{
 	border: none;
 }
@@ -123,3 +129,9 @@ user-select: none; /* Standard */
 {
 	text-align: center;
 }
+.fancybox-slide.watermark .fancybox-spaceball {
+	background-image: url('https://fancyapps.com/GJbkSPU.png');
+	background-size: cover;
+	background-repeat: no-repeat;
+  }
+  

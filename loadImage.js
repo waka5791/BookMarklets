@@ -18,15 +18,9 @@ jQuery(document).ready(function () {
 
     const GetImagePathData = function (_singleData) {
         let _image = _singleData.image;
-        let _dataPath = _singleData.path;
-        let _imgTnPath = _baseDataUrl + _dataPath;
-        let _imgOrignalPath = _baseDataUrl + _dataPath;
-        let _imgPreviewPath = _baseDataUrl + _dataPath;
-        if (_image) {
-            _imgTnPath = _baseDataUrl + _image.t;
-            _imgOrignalPath = _baseDataUrl + _image.o;
-            _imgPreviewPath = _baseDataUrl + _image.p;
-        }
+        let _imgTnPath = _baseDataUrl + _image.t;
+        let _imgOrignalPath = _baseDataUrl + _image.o;
+        let _imgPreviewPath = _baseDataUrl + _image.p;
         let _imagePathData = { "o": _imgOrignalPath, "p": _imgPreviewPath, "t": _imgTnPath };
         return _imagePathData;
     }
@@ -44,8 +38,7 @@ jQuery(document).ready(function () {
                     'alt': _image.t,
                     'class': 'xzoom',
                     'xoriginal': _image.o,
-                    'id': 'previewBoxImage',
-                    //'xpreview': _imgOrignalPath
+                    'id': 'previewBoxImage'
                 });
 
             _imgTag.bind("load", function () {
@@ -53,8 +46,8 @@ jQuery(document).ready(function () {
                 image.src = $(this).attr('src');
                 let _w = image.width;
                 let _h = image.height;
-                _imgTag.attr('data-wxh', `${_w} x ${_h}`);
-
+                $(this).attr('data-wxh', `${_w} x ${_h}`);
+                //   $('#previewBox').css({ width: _w*0.5, height: _h*0.5 });
                 $('#WidthAndHeight').html(`${_w} x ${_h}`);
             });
 
@@ -69,31 +62,11 @@ jQuery(document).ready(function () {
         }
         let _newData = [];
         for (let _idx = 0; _idx < _dataLen; _idx++) {
-            /*
-            let _image = _data[_idx].image;
-            let _dataPath = _data[_idx].path;
-            let _imgTnPath = _baseDataUrl + _dataPath;
-            let _imgOrignalPath = _baseDataUrl + _dataPath;
-            let _imgPreviewPath = _baseDataUrl + _dataPath;
-            if (_image) {
-                _imgTnPath = _baseDataUrl + _image.t;
-                _imgOrignalPath = _baseDataUrl + _image.o;
-                _imgPreviewPath = _baseDataUrl + _image.p;
-            }
-
-            if (_dataPath.match(/^http/) != null) {
-                _imgTnPath = _dataPath;
-            }
-            */
             let _image = GetImagePathData(_data[_idx]);
             let _caption = _data[_idx].caption.a;
             if (_caption === undefined) {
                 _caption = '-';
             }
-
-
-
-
             let _liTag = $('<div>', { class: 'singleImageContainer' });
             let _aTag = $('<a>',
                 {
@@ -107,69 +80,84 @@ jQuery(document).ready(function () {
                     'xpreview': _image.p,
                     'class': 'xzoom-gallery',
                     'xtitle': _caption,
-                    'caption': _caption,
-                    //'xpreview': _imgOrignalPath
+                    'caption': _caption
                 });
 
             _liTag.append(_aTag);
             _aTag.append(_imgTag);
             _galleryContainer.append(_liTag);
-
             let _cTag = $('<div>', { class: 'innerCaption' });
             _cTag.text(_idx + 1);
             _liTag.append(_cTag);
-            _aTag.on({
-                'click': function () {
-                    $('#previewBoxImage').attr('src', _1pxPngData);//プレビューリフレッシュ、ちらつきを抑える効果を期待
-                    $('#imageCaptionA').html($(this).data('caption'));
-                    _grayScaleButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
-                    _exifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
-                    exifInfoContainer.html('');
-                    $(this).children('img').addClass('grayImage');
-                },
-                'mouseleave': function () {
+            if (_isPc) {
+                _aTag.on({
+                    'click': function () {
+                        //  $('#previewBoxImage').attr('src', _1pxPngData);//プレビューリフレッシュ、ちらつきを抑える効果を期待
+                        $('#imageCaptionA').html($(this).data('caption'));
+                        _grayScaleButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
+                        _exifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
+                        exifInfoContainer.html('');
+                        $(this).children('img').addClass('grayImage');
+                    }
+                });
+                _imgTag.on({
+                    'error': function () {
+                        this.error = null;
+                        const _errMsg = '** Not Found. **';
+                        $(this).attr('src', _1pxPngData);
+                        $(this).attr('xpreview', _1pxPngData);
+                        $(this).attr('caption', _errMsg);
+                        _aTag.attr('href', _1pxPngData);
+                        _aTag.attr('data-caption', _errMsg);
 
-                    $('.xactive').trigger('click');
-
-                }
-            });
-            _imgTag.on({
-                'click': function () {
-                },
-                'error': function () {
-                    this.error = null;
-                    const _errMsg = '** Not Found. **';
-                    $(this).attr('src', _1pxPngData);
-                    $(this).attr('xpreview', _1pxPngData);
-                    $(this).attr('caption', _errMsg);
-                    _aTag.attr('href', _1pxPngData);
-                    _aTag.attr('data-caption', _errMsg);
-
-                    _data[_idx].caption.a = _errMsg;
-                }
-            });
+                        _data[_idx].caption.a = _errMsg;
+                    }
+                });
+            }
             // let _x = { "caption": { "a": _caption, "b": "", "c": "" }, "image": _image };
             // _newData[_idx] = _x;
         }
         _containerObj.append(_galleryContainer);
-
-
-
         // $('#debugConsole').html(JSON.stringify(_newData,null,2));
     }
 
     const Enhancer = function (_isPc) {
+        //fancybox 3 options
+        //https://me2.jp/blog/javascript/jquery_fancybox3_option.html
+        $.fancybox.defaults.loop = true;
+        $.fancybox.defaults.protect = true;
+        $.fancybox.defaults.afterClose = function (instance, current) {
+            location.hash = '';
+        }
+        //(!instance.currentHash && !(item.type === "inline" || item.type === "html") ? item.origSrc || item.src : false) || window.location
+        $.fancybox.defaults.buttons = [
+            "zoom",
+            "share",
+            "slideShow",
+            "fullScreen",
+            "download",
+            "thumbs",
+            "close"
+        ];
+        if (!_isPc) {
+            return;
+        }
+        //xzoom optinon : adaptive: false(default true) にすると、xpreview使用時のマウスエンターでプレビュー表示サイズ計算が失敗するバグが回避できる
+        const _xzoomOption = { position: '#zoomBox', lensShape: 'box', fadeIn: true, hover: false, adaptive: false };
+        let instance = $('.xzoom, .xzoom-gallery').xzoom(_xzoomOption);
         let _kickFancyBox = function (event) {
             let xzoom = $('.xzoom:first').data('xzoom');
             xzoom.closezoom();
-            let i, images = new Array();
-            let gallery = xzoom.gallery().ogallery;
-            let index = xzoom.gallery().index;
-            for (i in gallery) {
-                let _caption = _data[i].caption.a;
-                images[i] = { src: gallery[i], caption: _caption };
+            let _idx, images = new Array();
+            let _gallery = xzoom.gallery().ogallery;
+            let _xzoomCurIdx = xzoom.gallery().index;
+
+            for (_idx in _gallery) {
+                let _caption = _data[_idx].caption.a;
+                images[_idx] = { src: _gallery[_idx], caption: _caption };
             }
-            $.fancybox.open(images, { loop: true }, index);
+
+            $.fancybox.open(images, {}, _xzoomCurIdx);
             event.preventDefault();
         }
 
@@ -177,33 +165,27 @@ jQuery(document).ready(function () {
             _kickFancyBox(event);
         });
 
-        if (!_isPc) {
-            return;
-        }
-        const _xzoomOption = { position: '#zoomBox', lensShape: 'box', fadeIn: true, hover: false };
-        const instance = $('.xzoom, .xzoom-gallery').xzoom(_xzoomOption);
-
-
         //Integration with fancybox version 3 plugin
         $('.xzoom:first').bind('click', function (event) {
-            // _kickFancyBox(event);
+            if (_isZoom) {
+                return;
+            }
+            _kickFancyBox(event);
         });
 
-        if (true) {
-            //Custom scale delta example
-            let scale = 0;
-            const scaleDelta = 0.1;
-            instance.eventscroll = function (element) {
-                element.xon('mousewheel DOMMouseScroll', function (event) {
-                    let delta = -event.originalEvent.detail || event.originalEvent.wheelDelta || event.xdelta;
-                    if (delta > 0) delta = -scaleDelta; else delta = scaleDelta;
-                    scale += delta;
-                    if (scale < -1) scale = -1;
-                    if (scale > 1) scale = 1;
-                    event.xscale = scale;
-                    instance.xscroll(event)
-                });
-            }
+        //Custom scale delta example
+        let scale = 0;
+        const scaleDelta = 0.1;
+        instance.eventscroll = function (element) {
+            element.xon('mousewheel DOMMouseScroll', function (event) {
+                let delta = -event.originalEvent.detail || event.originalEvent.wheelDelta || event.xdelta;
+                if (delta > 0) delta = -scaleDelta; else delta = scaleDelta;
+                scale += delta;
+                if (scale < -1) scale = -1;
+                if (scale > 1) scale = 1;
+                event.xscale = scale;
+                instance.xscroll(event)
+            });
         }
 
         instance.eventopen = function (element) {
@@ -227,9 +209,6 @@ jQuery(document).ready(function () {
                 _isZoom = !_isZoom;
                 if (_isZoom) {
                     //$('.xzoom:first').trigger('mouseenter');
-
-                    //  $('.xactive').trigger('click');
-
                     instance.closezoom();
                 } else {
                     //instance.eventdefault('eventmove');
@@ -252,46 +231,32 @@ jQuery(document).ready(function () {
             }
         });
         */
-
     }
 
     const GrayScaleOption = function () {
         let _effected = null;
         const _applyGrayScaleEffect = function () {
             let defer = $.Deferred();
+            const _originalImage = $('#previewBoxImage').attr('xoriginal');
+            const _imageSrc = _originalImage
 
-            if (true) {
-                const _originalImage = $('#previewBoxImage').attr('xoriginal');
-                const _imageSrc = _originalImage
-
-                const _dmyNum = new Date().getTime();
-                exifInfoContainer.html('');
-                let _dmyId = 'dmyImgId' + _dmyNum;
-                let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
-                //  $('body').append(_dmyImg);
-                _dmyImg.grayscale();
-                setTimeout(function () {
-                    $('#previewBoxImage').attr('src', _dmyImg.attr('src'));
-                    defer.resolve();
-                }, 500);
-                return defer.promise();
-            } else {
-                $('.xzoom').grayscale();
-                setTimeout(function () {
-                    defer.resolve();
-                }, 500);
-                return defer.promise();
-            }
-
+            const _dmyNum = new Date().getTime();
+            exifInfoContainer.html('');
+            let _dmyId = 'dmyImgId' + _dmyNum;
+            let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
+            //  $('body').append(_dmyImg);
+            _dmyImg.grayscale();
+            setTimeout(function () {
+                $('#previewBoxImage').attr('src', _dmyImg.attr('src'));
+                defer.resolve();
+            }, 500);
+            return defer.promise();
         };
-
         function _effectApplyInZoomBox() {
             _effected = $('.xzoom').attr("src");
             $('.xzoom').attr({ 'xoriginal': _effected });
         };
         _grayScaleButton.on('click', function () {
-            // _grayScaleButton.attr({ 'disabled': true });
-            // _grayScaleButton.visibleToggle(false);
             _grayScaleButton.attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
             _exifGetButton.attr({ 'disabled': true }).removeClass('btn-outline-dark').addClass('btn-dark');
             let promise = _applyGrayScaleEffect();
@@ -304,7 +269,7 @@ jQuery(document).ready(function () {
     const ExifOption = function () {
         const getExif = function () {
             const _originalImage = $('#previewBoxImage').attr('xoriginal');
-            const _imageSrc = _originalImage
+            const _imageSrc = _originalImage;
 
             const _dmyNum = new Date().getTime();
             exifInfoContainer.html('');
@@ -312,16 +277,14 @@ jQuery(document).ready(function () {
             let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             $('body').append(_dmyImg);
             setTimeout(function () {
-
                 EXIF.getData(document.getElementById(_dmyId), function () {
                     let _exifInf = '';
                     if (true) {
                         let _maker = EXIF.getTag(this, "Make");
                         let _model = EXIF.getTag(this, "Model");
-                        let _orientation = '';//EXIF.getTag(this, "Orientation");
                         let _xResolution = EXIF.getTag(this, "PixelXDimension");
                         let _yResolution = EXIF.getTag(this, "PixelYDimension");
-                        _exifInf = `${_maker} ${_model} ${_orientation} ${_xResolution} x ${_yResolution}`;
+                        _exifInf = `${_maker} ${_model} ${_xResolution} x ${_yResolution}`;
                         exifInfoContainer.html(_exifInf);
                     } else {
                         let _mdt = EXIF.getAllTags(this);
