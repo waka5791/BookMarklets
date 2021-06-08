@@ -8,7 +8,6 @@
     <title>Rough Drawings</title>
     <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/13548419">
 
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -58,9 +57,8 @@
 </head>
 
 <body>
-
     <pre id="debugConsole"></pre>
-    <main class="container ">
+    <main class="container" id="mainContainer">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <div>
@@ -136,39 +134,54 @@
         <div class="row unselectable text-center">
             <div class="col-sm-12" id="imageList"></div>
         </div>
+
+        <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;"></div>
+
+        <footer class="container text-center">
+            <p>当画廊サイトは わか によって開発されました。</p>
+            <div>次のフレームワーク、プラグイン、ライブラリ、フォント、道具などを使用しています。</div>
+            <div class="col-sm-12">
+                <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                /
+                <a href="https://jquery.com/" target="_blank">jQuery</a>
+                /
+                <a href="https://jqueryui.com/" target="_blank">jQuery UI</a>
+                /
+                <a href="https://github.com/payalord/xZoom" target="_blank">xZoom</a>
+                /
+                <a href="http://www.fancyapps.com/fancybox/" target="_blank">fancyBox</a>
+                /
+                <a href="http://colorimazer.tacyniak.fr/" target="_blank">jQuery.Colorimazer</a>
+                /
+                <a href="https://github.com/exif-js/exif-js" target="_blank">exif-js</a>
+                /
+                <a href="https://getbootstrap.com/" target="_blank"><i class="fab fa-bootstrap"></i>Bootstrap</a>
+                /
+                <a href="https://fontawesome.com/" target="_blank"><i class="fab fa-font-awesome"></i>Font Awesome</a>
+                /
+                <a href="https://fonts.google.com/specimen/Stick" target="_blank">Stick</a>
+            </div>
+            <p>&copy; 2021 &middot; わか / a.k.a waka</p>
+        </footer>
     </main>
 
+    <script>
+        const ua = navigator.userAgent.toLowerCase();
+        const _isIE = (ua.indexOf('trident') != -1 || ua.indexOf('msie') != -1);
+        if (_isIE) {
+            const parent = document.getElementById('mainContainer');
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
+            const _pJa = document.createElement("center");
+            _pJa.innerText = 'IEには対応していません。他の最新ブラウザをご利用ください。';
+            parent.appendChild(_pJa);
+            parent.appendChild(document.createElement("hr"));
+            const _pEn = document.createElement("center");
+            _pEn.innerText = 'Unsupported.Please use a modern browser other than this IE.';
+            parent.appendChild(_pEn);
 
-    <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;"></div>
-
-    <footer class="container text-center">
-        <p>当画廊サイトは わか によって開発されました。</p>
-        <div>次のフレームワーク、プラグイン、ライブラリ、フォント、道具などを使用しています。</div>
-        <div  class="col-sm-12"> 
-            <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            /
-            <a href="https://jquery.com/" target="_blank">jQuery</a>
-            /
-            <a href="https://jqueryui.com/" target="_blank">jQuery UI</a>
-            /
-            <a href="https://github.com/payalord/xZoom" target="_blank">xZoom</a>
-            /
-            <a href="http://www.fancyapps.com/fancybox/" target="_blank">fancyBox</a>
-            /
-            <a href="http://colorimazer.tacyniak.fr/" target="_blank">jQuery.Colorimazer</a>
-            /
-            <a href="https://github.com/exif-js/exif-js" target="_blank">exif-js</a>
-            /
-            <a href="https://getbootstrap.com/" target="_blank"><i class="fab fa-bootstrap"></i>Bootstrap</a>
-            /
-            <a href="https://fontawesome.com/" target="_blank"><i class="fab fa-font-awesome"></i>Font Awesome</a>
-            /
-            <a href="https://fonts.google.com/specimen/Stick" target="_blank">Stick</a>
-        </div>
-        <p>&copy; 2021 &middot; わか / a.k.a waka</p>
-
-
-    </footer>
+        }
+    </script>
 </body>
-
 </html>
