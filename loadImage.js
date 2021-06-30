@@ -121,7 +121,7 @@ jQuery(document).ready(function () {
                     }
                 });
                 if (_idx == 0) {
-                    //_aTag.trigger('click');
+                    _aTag.trigger('click');
                 }
             }
         }
