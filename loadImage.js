@@ -73,7 +73,8 @@ jQuery(document).ready(function () {
             _data[_idx].caption.fancybox = _caption.a + '<br>' + _caption.b;
             let _liTag = $('<div>', { class: 'singleImageContainer' });
             let _aTag = $('<a>', { 'href': _image.o, 'title': _caption.a });
-            _aTag.data('fancybox', 'images');
+            //_aTag.data('fancybox', 'images');
+            _aTag.attr('data-fancybox', 'images');
             _aTag.data('caption', _caption.a);            
             _aTag.data('idx', _idx);
             let _imgTag = $('<img>',
