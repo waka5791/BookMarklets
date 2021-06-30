@@ -97,7 +97,7 @@ jQuery(document).ready(function () {
                         //  $('#previewBoxImage').attr('src', _1pxPngData);//プレビューリフレッシュ、ちらつきを抑える効果を期待
                         //$('#imageCaptionA').text($(this).data('caption'));
                         let _idx = $(this).data('idx');
-                        $('#imageCaptionA').text(_caption.a);
+                        $('#imageCaptionA').text(_idx + 1 + '. ' + _caption.a);
                         $('#imageCaptionB').text(_caption.b);
                         $('#previewBoxImage').data('path', _caption.a + _caption.b);
 
