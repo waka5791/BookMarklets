@@ -24,10 +24,12 @@ jQuery(document).ready(function () {
         return _imagePathData;
     }
     const getSizeStr = function (e) {
-        var t = ["Bytes", "KB", "MB", "GB", "TB"]
-        if (0 === e) return "n/a"
-        var n = parseInt(Math.floor(Math.log(e) / Math.log(1024)))
-        return Math.round(e / Math.pow(1024, n)) + " " + t[n]
+        const _unitWord = ["Bytes", "KB", "MB", "GB", "TB"];
+        if (0 === e) {
+            return "n/a";
+        } 
+        let _prettyNum = parseInt(Math.floor(Math.log(e) / Math.log(1024)));
+        return Math.round(e / Math.pow(1024, _prettyNum)) + " " + _unitWord[_prettyNum];
     }
 
     const CreateXzoomContainer = function (_data, _isPc) {
@@ -38,8 +40,8 @@ jQuery(document).ready(function () {
         let _canPreview = (_dataLen > 0 && _isPc);
         if (_canPreview) {
             let _caption = _data[0].caption;
-            $('#imageCaptionA').text(_caption.a);
-            $('#imageCaptionB').text(_caption.b);
+            //$('#imageCaptionA').text(_caption.a);
+            //$('#imageCaptionB').text(_caption.b);
 
             let _image = GetImagePathData(_data[0]);
             let _imgTag = $('<img>',
@@ -50,58 +52,12 @@ jQuery(document).ready(function () {
                     'xoriginal': _image.o,
                     'id': 'previewBoxImage'
                 });
+            //_imgTag.data('path', _caption.a + _caption.b);
 
-            
-            _imgTag.bind("load", function () {
-                let _imgPath = $(this).attr('xoriginal');
-                let image = new Image();
-                image.src = _imgPath;
-                let _w = image.width;
-                let _h = image.height;
-                $(this).attr('data-wxh', `${_w} x ${_h}`);
-
-                let xhr = new XMLHttpRequest();
-                xhr.open("GET", _imgPath, true);
-                xhr.responseType = "arraybuffer";
-                xhr.onreadystatechange = function () {
-                    if (this.readyState == this.DONE) {
-                        let _responsArray = (new Uint8Array(this.response)).subarray(0, 4);
-                        let _header = "";
-                        let _mimetype = "";
-                        for (let _idx = 0; _idx < _responsArray.length; _idx++) {
-                            _header += _responsArray[_idx].toString(16);
-                        }
-                        switch (_header) {
-                            //Ref. https://en.wikipedia.org/wiki/List_of_file_signatures
-                            case "89504e47":
-                                _mimetype = "image/png";
-                                break;
-                            case "47494638":
-                                _mimetype = "image/gif";
-                                break;
-                            case "ffd8ffe0":
-                            case "ffd8ffe1":
-                            case "ffd8ffe2":
-                                _mimetype = "image/jpeg";
-                                break;
-                            case "52494646":
-                            case "57454250":
-                                _mimetype = "image/webp";
-                                break;
-                            default:
-                                _mimetype = "unknown";
-                                break;
-                        }
-                        const basename = _imgPath.split('/').pop();
-                        ExifInfoContainer.html(`<a href="${_imgPath}">${basename}</a> ${_mimetype} ${getSizeStr(this.response.byteLength)}`);
-                        _imgTag.attr('data-filesize', `${getSizeStr(this.response.byteLength)}`);
-                    }
-                };
-                xhr.send(null);
-
-            });
-            
             _imgTag.on({
+                'load': function () {
+                    GetImageInfo();
+                },
                 'error': function () {
                     this.error = null;
                     $(this).attr('src', Fake1pxPngData);
@@ -110,20 +66,16 @@ jQuery(document).ready(function () {
 
             $('#previewBox').append(_imgTag);
         }
-        let _newData = [];
+        
         for (let _idx = 0; _idx < _dataLen; _idx++) {
             let _image = GetImagePathData(_data[_idx]);
             let _caption = _data[_idx].caption;
             _data[_idx].caption.fancybox = _caption.a + '<br>' + _caption.b;
             let _liTag = $('<div>', { class: 'singleImageContainer' });
-            let _aTag = $('<a>',
-                {
-                    'href': _image.o,
-                    'data-fancybox': 'images',
-                    'data-caption': _caption.a,
-                    'title': _caption.a,
-                    'data-idx': _idx
-                });
+            let _aTag = $('<a>', { 'href': _image.o, 'title': _caption.a });
+            _aTag.data('fancybox', 'images');
+            _aTag.data('caption', _caption.a);            
+            _aTag.data('idx', _idx);
             let _imgTag = $('<img>',
                 {
                     'src': _image.t,
@@ -146,11 +98,12 @@ jQuery(document).ready(function () {
                         let _idx = $(this).data('idx');
                         $('#imageCaptionA').text(_caption.a);
                         $('#imageCaptionB').text(_caption.b);
+                        $('#previewBoxImage').data('path', _caption.a + _caption.b);
 
                         GrayScaleButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
                         ExifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
-                        ExifInfoContainer.html('');
-                        $(this).children('img').addClass('grayImage');
+                        ExifInfoContainer.empty();
+                        $(this).children('img').addClass('grayFrame');
                     }
                 });
                 _imgTag.on({
@@ -161,16 +114,83 @@ jQuery(document).ready(function () {
                         $(this).attr('xpreview', Fake1pxPngData);
                         $(this).attr('caption', _errMsg);
                         _aTag.attr('href', Fake1pxPngData);
-                        _aTag.attr('data-caption', _errMsg);
+                        _aTag.data('caption', _errMsg);
 
                         _data[_idx].caption.fancybox = _errMsg;
                     }
                 });
+                if (_idx == 0) {
+                    //_aTag.trigger('click');
+                }
             }
         }
         _containerObj.append(_galleryContainer);
         // $('#debugConsole').html(JSON.stringify(_newData,null,2));
     }
+
+    const GetImageInfo = function () {
+        let _imgTag = $('#previewBoxImage');
+        let _imgPath = _imgTag.attr('xoriginal');
+        let _pvPath = _imgTag.data('path');
+        let _xhr = new XMLHttpRequest();
+        _xhr.open('GET', _imgPath, true);
+        _xhr.responseType = 'arraybuffer';
+        _xhr.onreadystatechange = function () {
+            if (this.readyState === XMLHttpRequest.DONE) {
+                let _responsArray = (new Uint8Array(this.response)).subarray(0, 4);
+                let _header = '';
+                let _mimetype = '';
+                for (let _idx = 0; _idx < _responsArray.length; _idx++) {
+                    _header += _responsArray[_idx].toString(16);
+                }
+                switch (_header) {
+                    //Ref. https://en.wikipedia.org/wiki/List_of_file_signatures
+                    case "89504e47":
+                        _mimetype = "image/png";
+                        break;
+                    case "47494638":
+                        _mimetype = "image/gif";
+                        break;
+                    case "ffd8ffe0":
+                    case "ffd8ffe1":
+                    case "ffd8ffe2":
+                        _mimetype = "image/jpeg";
+                        break;
+                    case "52494646":
+                    case "57454250":
+                        _mimetype = "image/webp";
+                        break;
+                    default:
+                        _mimetype = "unknown";
+                        break;
+                }
+                let _basename = '[DL]';
+                let _dlName = '';
+                let _aTag = $('<a>');
+                let _span = $('<span>');
+                _aTag.attr('href', _imgPath);
+                _span.text(`${_mimetype} ${getSizeStr(this.response.byteLength)}`);
+                if (_imgPath.indexOf('data:') == 0) {
+                    _dlName = _pvPath + '.png';
+                } else {
+                    _dlName = _imgPath.split('/').pop();                    
+                }
+                _aTag.attr('download', _dlName);
+                _aTag.attr('title', _dlName);
+                _aTag.text(_basename);
+                const _faicon = $('<i>', { class: 'fas fa-download' });
+                ExifInfoContainer.append(_span).append(_aTag.append(_faicon));
+                /*
+                let _imageObj = new Image();
+                _imageObj.src = _imgPath;
+                let _w = _imageObj.width;
+                let _h = _imageObj.height;
+                _imgTag.data('wxh', `${_w} x ${_h}`);
+                */
+            }
+        };
+        _xhr.send(null);
+    };
 
     const Enhancer = function (_isPc) {
         //fancybox 3 options
@@ -291,10 +311,10 @@ jQuery(document).ready(function () {
         const _applyGrayScaleEffect = function () {
             let defer = $.Deferred();
             const _originalImage = $('#previewBoxImage').attr('xoriginal');
-            const _imageSrc = _originalImage
+            const _imageSrc = _originalImage;
 
             const _dmyNum = new Date().getTime();
-            ExifInfoContainer.html('');
+            ExifInfoContainer.empty();
             let _dmyId = 'dmyImgId' + _dmyNum;
             let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             //  $('body').append(_dmyImg);
@@ -306,8 +326,8 @@ jQuery(document).ready(function () {
             return defer.promise();
         };
         function _effectApplyInZoomBox() {
-            _effected = $('.xzoom').attr("src");
-            $('.xzoom').attr({ 'xoriginal': _effected });
+            _effected = $('#previewBoxImage').attr("src");
+            $('#previewBoxImage').attr({ 'xoriginal': _effected });
         };
         GrayScaleButton.on('click', function () {
             GrayScaleButton.attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
@@ -325,7 +345,7 @@ jQuery(document).ready(function () {
             const _imageSrc = _originalImage;
 
             const _dmyNum = new Date().getTime();
-            ExifInfoContainer.html('');
+            ExifInfoContainer.empty();
             let _dmyId = 'dmyImgId' + _dmyNum;
             let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             $('body').append(_dmyImg);
@@ -338,7 +358,8 @@ jQuery(document).ready(function () {
                         let _xResolution = EXIF.getTag(this, "PixelXDimension");
                         let _yResolution = EXIF.getTag(this, "PixelYDimension");
                         _exifInf = `${_maker} ${_model} ${_xResolution} x ${_yResolution}`;
-                        ExifInfoContainer.html(_exifInf);
+                        let _span = $('<span>').html(_exifInf);
+                        ExifInfoContainer.append(_span);
                     } else {
                         let _mdt = EXIF.getAllTags(this);
                         ExifInfoContainer.html(`${_mdt["PixelXDimension"]} x ${_mdt["PixelYDimension"]}`);
