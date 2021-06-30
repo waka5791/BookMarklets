@@ -10,6 +10,12 @@ main {
 	font-family: 'Stick',sans-serif;
 }
 
+div#exifInfo{
+	font-family: 'Times New Roman';
+	color: #555;
+	font-size: smaller;
+}
+
 h1.titleHeader {
 	text-align: center;
 	display: block;
@@ -39,7 +45,7 @@ div.innerCaption {
 	display: inline-block;
 }
 
-#imageList img.grayImage{
+#imageList img.grayFrame{
 	background-color: #888;
 }
 
