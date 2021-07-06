@@ -9,17 +9,51 @@ jQuery(document).ready(function () {
 
     let _isZoom = false;
     let ImageDataAry = null;
-    $.ajaxSetup({ async: false });
-    $.getJSON('imageData.json', function (jsonData) {
-        ImageDataAry = JSON.parse(JSON.stringify(jsonData));
-    });
-    $.ajaxSetup({ async: true });
+    let DataFile = 'imageData.json';
+    const LoadImageData = function (_fileName) {
+        $.ajaxSetup({ async: false });
+        $.getJSON(_fileName, function (jsonData) {
+            ImageDataAry = JSON.parse(JSON.stringify(jsonData));
+        });
+        $.ajaxSetup({ async: true });
+    }
 
+    const LoadImageDataCSV = function (_fileName) {
+        $.ajaxSetup({ async: false });
+        ImageDataAry = [];
+        $.ajax({
+            url: _fileName,
+            success: function (data) {
+                _csv = $.csv.toArrays(data);
+                $(_csv).each(function () {
+                    let _rows = this;
+                    if (_rows != null) {
+                        _imageData = {};
+                        _imageData.caption = {};
+                        _imageData.image = {};
+                        if (_rows.length > 0) {
+                            _imageData.caption.a = '';
+                            _imageData.image.o = _rows[0];
+                            _imageData.image.p = _rows[0];
+                            _imageData.image.t = _rows[0];
+                        }
+                        ImageDataAry.push(_imageData);
+                    }
+                });
+            }
+        });
+        $.ajaxSetup({ async: true });
+    }
+    
     const GetImagePathData = function (_singleData) {
         let _image = _singleData.image;
-        let _imgTnPath = DataBaseUrl + _image.t;
-        let _imgOrignalPath = DataBaseUrl + _image.o;
-        let _imgPreviewPath = DataBaseUrl + _image.p;
+        let _baseUrl = DataBaseUrl;
+        if (_image.o.match(/^http/)) {
+            _baseUrl = '';
+        }
+        let _imgTnPath = _baseUrl + _image.t;
+        let _imgOrignalPath = _baseUrl + _image.o;
+        let _imgPreviewPath = _baseUrl + _image.p;
         let _imagePathData = { "o": _imgOrignalPath, "p": _imgPreviewPath, "t": _imgTnPath };
         return _imagePathData;
     }
@@ -40,9 +74,6 @@ jQuery(document).ready(function () {
         let _canPreview = (_dataLen > 0 && _isPc);
         if (_canPreview) {
             let _caption = _data[0].caption;
-            //$('#imageCaptionA').text(_caption.a);
-            //$('#imageCaptionB').text(_caption.b);
-
             let _image = GetImagePathData(_data[0]);
             let _imgTag = $('<img>',
                 {
@@ -52,7 +83,6 @@ jQuery(document).ready(function () {
                     'xoriginal': _image.o,
                     'id': 'previewBoxImage'
                 });
-            //_imgTag.data('path', _caption.a + _caption.b);
 
             _imgTag.on({
                 'load': function () {
@@ -75,8 +105,8 @@ jQuery(document).ready(function () {
             let _aTag = $('<a>', { 'href': _image.o, 'title': _caption.a });
             //_aTag.data('fancybox', 'images');
             _aTag.attr('data-fancybox', 'images');
-            _aTag.data('caption', _caption.a);            
-            _aTag.data('idx', _idx);
+            _aTag.attr('data-caption', _caption.a);            
+            _aTag.attr('data-idx', _idx);
             let _imgTag = $('<img>',
                 {
                     'src': _image.t,
@@ -193,7 +223,7 @@ jQuery(document).ready(function () {
         _xhr.send(null);
     };
 
-    const Enhancer = function (_isPc) {
+    const Enhancer = function (_data, _isPc) {
         //fancybox 3 options
         //https://me2.jp/blog/javascript/jquery_fancybox3_option.html
         $.fancybox.defaults.loop = true;
@@ -226,12 +256,15 @@ jQuery(document).ready(function () {
             let _xzoomCurIdx = xzoom.gallery().index;
 
             for (_idx in _gallery) {
-                let _caption = ImageDataAry[_idx].caption.fancybox;
+                let _caption = _data[_idx].caption.fancybox;
                 let _hash = `images`;
                 images[_idx] = { src: _gallery[_idx], caption: _caption, hash: _hash };
             }
 
-            $.fancybox.open(images, {}, _xzoomCurIdx);
+            _fbi = $.fancybox.open(images, {}, _xzoomCurIdx);
+            $(document).on('afterShow.fb', function (_e, _instance, _slide) {
+                $('[data-idx=' + _slide.index + ']').trigger('click');
+            });
             event.preventDefault();
         }
 
@@ -393,6 +426,7 @@ jQuery(document).ready(function () {
         // PC
         _isEnableXZoom = true;
     }
+
     if (!_isEnableXZoom) {
         const _pTag = $('<p>', { 'text': 'パソコン版はルーペ機能が使えます。' });
         $('footer').append(_pTag);
@@ -400,9 +434,14 @@ jQuery(document).ready(function () {
 
     $('.xZoomContainer, #topMenu').toggle(_isEnableXZoom);
 
+    if (false) {
+        _isEnableXZoom = false;
+        LoadImageDataCSV('a.txt');
+    } else {
+        LoadImageData(DataFile);
+    }
     CreateXzoomContainer(ImageDataAry, _isEnableXZoom);
-    Enhancer(_isEnableXZoom);
-
+    Enhancer(ImageDataAry, _isEnableXZoom);
 
     if (_isEnableXZoom) {
         //$('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
