@@ -44,7 +44,7 @@ jQuery(document).ready(function () {
         });
         $.ajaxSetup({ async: true });
     }
-    
+
     const GetImagePathData = function (_singleData) {
         let _image = _singleData.image;
         let _baseUrl = DataBaseUrl;
@@ -57,11 +57,12 @@ jQuery(document).ready(function () {
         let _imagePathData = { "o": _imgOrignalPath, "p": _imgPreviewPath, "t": _imgTnPath };
         return _imagePathData;
     }
+
     const getSizeStr = function (e) {
         const _unitWord = ["Bytes", "KB", "MB", "GB", "TB"];
         if (0 === e) {
             return "n/a";
-        } 
+        }
         let _prettyNum = parseInt(Math.floor(Math.log(e) / Math.log(1024)));
         return Math.round(e / Math.pow(1024, _prettyNum)) + " " + _unitWord[_prettyNum];
     }
@@ -93,10 +94,9 @@ jQuery(document).ready(function () {
                     $(this).attr('src', Fake1pxPngData);
                 }
             });
-
             $('#previewBox').append(_imgTag);
         }
-        
+
         for (let _idx = 0; _idx < _dataLen; _idx++) {
             let _image = GetImagePathData(_data[_idx]);
             let _caption = _data[_idx].caption;
@@ -105,7 +105,7 @@ jQuery(document).ready(function () {
             let _aTag = $('<a>', { 'href': _image.o, 'title': _caption.a });
             //_aTag.data('fancybox', 'images');
             _aTag.attr('data-fancybox', 'images');
-            _aTag.attr('data-caption', _caption.a);            
+            _aTag.attr('data-caption', _caption.a);
             _aTag.attr('data-idx', _idx);
             let _imgTag = $('<img>',
                 {
@@ -133,7 +133,7 @@ jQuery(document).ready(function () {
 
                         GrayScaleButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
                         ExifGetButton.attr({ 'disabled': false }).removeClass('btn-dark').addClass('btn-outline-dark');
-                        ExifInfoContainer.empty();
+
                         $(this).children('img').addClass('grayFrame');
                     }
                 });
@@ -157,6 +157,28 @@ jQuery(document).ready(function () {
         }
         _containerObj.append(_galleryContainer);
         // $('#debugConsole').html(JSON.stringify(_newData,null,2));
+
+        const _seekImage = function (_direction) {
+            let xzoom = $('.xzoom:first').data('xzoom');
+            xzoom.closezoom();
+            let _xzoomCurIdx = xzoom.gallery().index + _direction;
+            if (_xzoomCurIdx < 0) {
+                _xzoomCurIdx = _dataLen - 1;
+            } else if (_xzoomCurIdx >= _dataLen) {
+                _xzoomCurIdx = 0;
+            }
+            $('[data-idx=' + _xzoomCurIdx + ']').trigger('click');
+        }
+        $('#prevImageBtn').on({
+            'click': function () {
+                _seekImage(-1);
+            }
+        });
+        $('#nextImageBtn').on({
+            'click': function () {
+                _seekImage(1);
+            }
+        });
     }
 
     const GetImageInfo = function () {
@@ -204,12 +226,13 @@ jQuery(document).ready(function () {
                 if (_imgPath.indexOf('data:') == 0) {
                     _dlName = _pvPath + '.png';
                 } else {
-                    _dlName = _imgPath.split('/').pop();                    
+                    _dlName = _imgPath.split('/').pop();
                 }
                 _aTag.attr('download', _dlName);
                 _aTag.attr('title', _dlName);
                 _aTag.text(_basename);
                 const _faicon = $('<i>', { class: 'fas fa-download' });
+                ExifInfoContainer.empty();
                 ExifInfoContainer.append(_span).append(_aTag.append(_faicon));
                 /*
                 let _imageObj = new Image();
@@ -348,13 +371,15 @@ jQuery(document).ready(function () {
             const _imageSrc = _originalImage;
 
             const _dmyNum = new Date().getTime();
-            ExifInfoContainer.empty();
+            //ExifInfoContainer.empty();
             let _dmyId = 'dmyImgId' + _dmyNum;
             let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             //  $('body').append(_dmyImg);
+            
             _dmyImg.grayscale();
             setTimeout(function () {
                 $('#previewBoxImage').attr('src', _dmyImg.attr('src'));
+                $('#prevImageBtn, #nextImageBtn').attr({ 'disabled': false });
                 defer.resolve();
             }, 500);
             return defer.promise();
@@ -366,6 +391,7 @@ jQuery(document).ready(function () {
         GrayScaleButton.on('click', function () {
             GrayScaleButton.attr({ 'disabled': true }).toggleClass('btn-outline-dark btn-dark');
             ExifGetButton.attr({ 'disabled': true }).removeClass('btn-outline-dark').addClass('btn-dark');
+            $('#prevImageBtn, #nextImageBtn').attr({ 'disabled': true });
             let promise = _applyGrayScaleEffect();
             promise.done(function () {
                 _effectApplyInZoomBox();
@@ -379,7 +405,7 @@ jQuery(document).ready(function () {
             const _imageSrc = _originalImage;
 
             const _dmyNum = new Date().getTime();
-            ExifInfoContainer.empty();
+            
             let _dmyId = 'dmyImgId' + _dmyNum;
             let _dmyImg = $('<img>', { src: _imageSrc, id: _dmyId });
             $('body').append(_dmyImg);
@@ -387,6 +413,7 @@ jQuery(document).ready(function () {
                 EXIF.getData(document.getElementById(_dmyId), function () {
                     let _exifInf = '';
                     if (true) {
+                        ExifInfoContainer.empty();
                         let _maker = EXIF.getTag(this, "Make");
                         let _model = EXIF.getTag(this, "Model");
                         let _xResolution = EXIF.getTag(this, "PixelXDimension");
@@ -408,7 +435,7 @@ jQuery(document).ready(function () {
         });
     }
 
-    if (location.protocol.indexOf('http') != 0) {        
+    if (location.protocol.indexOf('http') != 0) {
         document.title = document.title + ' -debug-';
     }
 
@@ -443,6 +470,7 @@ jQuery(document).ready(function () {
     CreateXzoomContainer(ImageDataAry, _isEnableXZoom);
     Enhancer(ImageDataAry, _isEnableXZoom);
 
+    $('main').show();
     if (_isEnableXZoom) {
         //$('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
         let timer = false;
@@ -489,12 +517,14 @@ jQuery(document).ready(function () {
             maxWidth: 500
         });
 
+
         function ZoomContainerControler() {
+            const _xzoomHeight = '500';
             let _visible = true;
             let _windowH = $(window).height();
             let _windowW = $(window).width();
             if (_isEnableXZoom) {
-                if ($('.xzoom').height() > _windowH * 0.7 || $('.xzoom').width() > _windowW * 0.8) {
+                if (_windowH * 0.7 < _xzoomHeight || _windowW * 0.8 < _xzoomHeight) {
                     $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
                     $('#xzoomMainContainer').addClass('invalidWindowSize');
                 } else {
@@ -510,4 +540,3 @@ jQuery(document).ready(function () {
         ZoomContainerControler();
     }
 });
-
