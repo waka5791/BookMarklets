@@ -7,13 +7,14 @@ main {
 }
 
 .container {
-	font-family: 'Stick',sans-serif;
+	font-family: 'Stick', sans-serif;
 }
 
-div#exifInfo{
+div#exifInfo {
 	font-family: 'Times New Roman';
 	color: #555;
 	font-size: smaller;
+	height: 20px;
 }
 
 h1.titleHeader {
@@ -32,45 +33,40 @@ img.xzoom-gallery {
 	object-fit: cover;
 }
 
-div.singleImageContainer
-{
+div.singleImageContainer {
 	display: inline-block;
 }
 
-div.innerCaption {
-	
-}
+div.innerCaption {}
 
 #imageList a {
 	display: inline-block;
 }
 
-#imageList img.grayFrame{
+#imageList img.grayFrame {
 	background-color: #888;
 }
 
-.xzoom{
-
+.xzoom {
 	height: 500px;
+	box-shadow: 0 5px 18px -4px rgb(10 10 10 / 80%);
 }
 
 div#previewBox {
 	position: relative;
-	border: 1px solid #ccc;
+	/*border: 1px solid #ccc;*/
 	display: inline-block;
 	line-height: 0;
-
-	box-shadow: 0 5px 18px -4px rgb(10 10 10 / 80%);
 }
 
-#zoomBox{
+#zoomBox {
 	width: 280px;
 	height: 280px;
-	border:1px solid black;
-	
-	position:fixed;
-	top:180px;
-	left:50px;
+	border: 1px solid black;
+
+	position: fixed;
+	top: 180px;
+	left: 50px;
 
 	background-color: gray;
 	opacity: 0.5;
@@ -78,12 +74,12 @@ div#previewBox {
 
 #xzoomMainContainer {
 	background-color: #eee;
-	position: sticky; 
+	position: sticky;
 	top: 30px;
 }
 
-.invalidWindowSize{
-	border-bottom:1px dashed gray;
+.invalidWindowSize {
+	border-bottom: 1px dashed gray;
 }
 
 #optionMenu button {
@@ -91,7 +87,10 @@ div#previewBox {
 	height: 30px;
 	cursor: pointer;
 }
-#fullScreenMode, #zoomOnOff, #zoomBoxOnOff {
+
+#fullScreenMode,
+#zoomOnOff,
+#zoomBoxOnOff {
 
 	/*
 	position:absolute;
@@ -100,9 +99,9 @@ div#previewBox {
 	cursor: pointer;*/
 }
 
-#topMenu{
+#topMenu {
 	position: fixed;
-	top:0px;
+	top: 0px;
 	padding: 2px;
 }
 
@@ -111,39 +110,51 @@ div#previewBox img {
 	vertical-align: middle;
 }
 
-#imageCaptionA, #imageCaptionB{
+
+#captionContainer {
+	border: dotted;
+	margin-top: 7px;
+}
+
+#imageCaptionA,
+#imageCaptionB {
 	padding: 5px;
 	display: inline-block;
 	height: 20px;
 }
 
-#imageCaptionA{
+#imageCaptionA {
 	font-weight: bold;
 }
 
-.unselectable
-{
-	-webkit-user-select: none; /* Safari */        
--moz-user-select: none; /* Firefox */
--ms-user-select: none; /* IE10+/Edge */
-user-select: none; /* Standard */
+.unselectable {
+	-webkit-user-select: none;
+	/* Safari */
+	-moz-user-select: none;
+	/* Firefox */
+	-ms-user-select: none;
+	/* IE10+/Edge */
+	user-select: none;
+	/* Standard */
 }
 
-
+.dotted-border {
+	border: dotted;
+	height: 100%;
+}
 
 
 /* Fancy Box */
-.fancybox-caption{
+.fancybox-caption {
 	border: none;
 }
 
-.fancybox-caption-wrap
-{
+.fancybox-caption-wrap {
 	text-align: center;
 }
+
 .fancybox-slide.watermark .fancybox-spaceball {
 	background-image: url('https://fancyapps.com/GJbkSPU.png');
 	background-size: cover;
 	background-repeat: no-repeat;
-  }
-  
+}
