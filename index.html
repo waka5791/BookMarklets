@@ -55,17 +55,17 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- -->
-    <!-- 
+
     <script src="jquery-my-util.js"></script>
     <script src="loadImage.js"></script>
     <link rel="stylesheet" href="main.css" />
-     -->
-    <script id="_CACHE_BUSTER_" src="cache-busting.js" charset="utf-8"></script>
+
+    <!--     <script id="_CACHE_BUSTER_" src="cache-busting.js" charset="utf-8"></script>     -->
 </head>
 
 <body>
     <pre id="debugConsole"></pre>
-    <main class="container" id="mainContainer">
+    <main class="container" id="mainContainer" style="display:none;">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <div>
@@ -86,23 +86,42 @@
         </div>
 
         <div class="row unselectable xZoomContainer" id="xzoomMainContainer">
+            <!--
+            <div class="col-sm-2">
+                <p class="dotted-border d-flex align-items-center">
+               le    </p>
+            </div>
+            <div class="col-sm-8 text-center">
+                <div class="dotted-border" id="previewBox"></div>
+            </div>
+            <div class="col-sm-2 text-center">
+                <p class="dotted-border d-flex align-items-center">
+                    r  </p>
+            </div>
+-->
             <div class="col-sm-12 text-center">
-                <div id="previewBox">
+                <div id="previewBox"></div>
+            </div>
 
+                <div class="col-sm-3 text-end">
+                    <button type="button" class="btn btn-outline-primary" id="prevImageBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
                 </div>
-            </div>
 
-            <div class="col-sm-12 text-center">
-                <div id="imageCaptionA"></div>
-            </div>
-            <div class="col-sm-12 text-center">
-                <div id="imageCaptionB"></div>
-            </div>
+                <div class="col-sm-6 text-center">
+                    <div id="imageCaptionA"></div>
+                </div>
 
+                <div class="col-sm-3 text-start">
+                    <button type="button" class="btn btn-outline-primary" id="nextImageBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
 
-            <div class="col-sm-12 text-center">
-                <span id="WidthAndHeight"></span>
-            </div>
+                <div class="col-sm-12 text-center">
+                    <div id="imageCaptionB"></div>
+                </div>
 
             <div class="col-sm-12 text-center">
                 <div id="exifInfo"></div>
@@ -164,10 +183,11 @@
             <p>&copy; 2021 &middot; わか / a.k.a waka</p>
         </footer>
     </main>
-
     <script>
+        /*
         const ua = navigator.userAgent.toLowerCase();
         const _isIE = (ua.indexOf('trident') != -1 || ua.indexOf('msie') != -1);
+        _isIE = true;
         if (_isIE) {
             const parent = document.getElementById('mainContainer');
             while (parent.firstChild) {
@@ -180,7 +200,9 @@
             const _pEn = document.createElement("center");
             _pEn.innerText = 'Unsupported.Please use a modern browser other than this IE.';
             parent.appendChild(_pEn);
-        }
+
+            parent.style.display = "block";
+        }*/
     </script>
     <span id='script'></span>
 </body>
