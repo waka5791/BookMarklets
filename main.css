@@ -37,8 +37,6 @@ div.singleImageContainer {
 	display: inline-block;
 }
 
-div.innerCaption {}
-
 #imageList a {
 	display: inline-block;
 }
@@ -88,23 +86,35 @@ div#previewBox {
 	cursor: pointer;
 }
 
+/*
 #fullScreenMode,
 #zoomOnOff,
 #zoomBoxOnOff {
 
-	/*
 	position:absolute;
     bottom:5px;
     left:5px;
-	cursor: pointer;*/
+	cursor: pointer;
 }
-
+*/
 #topMenu {
 	position: fixed;
 	top: 0px;
 	padding: 2px;
 }
 
+#version {
+	font-family: consolas,
+		"Liberation Mono",
+		courier,
+		monospace;
+
+	padding: 5px;
+}
+
+#version::before {
+	content: "ver.";
+}
 
 div#previewBox img {
 	vertical-align: middle;
