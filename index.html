@@ -60,7 +60,7 @@
     <script src="loadImage.js"></script>
     <link rel="stylesheet" href="main.css" />
      -->
-<script id="_CACHE_BUSTER_" src="cache-busting.js" charset="utf-8"></script>
+    <script id="_CACHE_BUSTER_" src="cache-busting.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -103,25 +103,25 @@
                 <div id="previewBox"></div>
             </div>
 
-                <div class="col-sm-3 text-end">
-                    <button type="button" class="btn btn-outline-primary" id="prevImageBtn">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                </div>
+            <div class="col-sm-3 text-end">
+                <button type="button" class="btn btn-outline-primary" id="prevImageBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
 
-                <div class="col-sm-6 text-center">
-                    <div id="imageCaptionA"></div>
-                </div>
+            <div class="col-sm-6 text-center">
+                <div id="imageCaptionA"></div>
+            </div>
 
-                <div class="col-sm-3 text-start">
-                    <button type="button" class="btn btn-outline-primary" id="nextImageBtn">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
+            <div class="col-sm-3 text-start">
+                <button type="button" class="btn btn-outline-primary" id="nextImageBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
 
-                <div class="col-sm-12 text-center">
-                    <div id="imageCaptionB"></div>
-                </div>
+            <div class="col-sm-12 text-center">
+                <div id="imageCaptionB"></div>
+            </div>
 
             <div class="col-sm-12 text-center">
                 <div id="exifInfo"></div>
@@ -154,9 +154,7 @@
 
         <div id="zoomBox" class="ui-widget-content xZoomContainer" style="visibility:hidden;"></div>
 
-        <footer class="container text-center">
-            <p>当画廊サイトは わか によって開発されました。</p>
-            <div>次のフレームワーク、プラグイン、ライブラリ、フォント、道具などを使用しています。</div>
+        <footer class="container text-center unselectable">
             <div class="col-sm-12">
                 <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                 /
@@ -181,29 +179,9 @@
                 <a href="https://fonts.google.com/specimen/Stick" target="_blank">Stick</a>
             </div>
             <p>&copy; 2021 &middot; わか / a.k.a waka</p>
+            <p id="version">20210713-1</p>
         </footer>
     </main>
-    <script>
-        /*
-        const ua = navigator.userAgent.toLowerCase();
-        const _isIE = (ua.indexOf('trident') != -1 || ua.indexOf('msie') != -1);
-        _isIE = true;
-        if (_isIE) {
-            const parent = document.getElementById('mainContainer');
-            while (parent.firstChild) {
-                parent.removeChild(parent.firstChild);
-            }
-            const _pJa = document.createElement("center");
-            _pJa.innerText = 'IEには対応していません。他の最新ブラウザをご利用ください。';
-            parent.appendChild(_pJa);
-            parent.appendChild(document.createElement("hr"));
-            const _pEn = document.createElement("center");
-            _pEn.innerText = 'Unsupported.Please use a modern browser other than this IE.';
-            parent.appendChild(_pEn);
-
-            parent.style.display = "block";
-        }*/
-    </script>
     <span id='script'></span>
 </body>
 
