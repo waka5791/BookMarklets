@@ -76,6 +76,12 @@ div#previewBox {
 	top: 30px;
 }
 
+#xzoomOptionContainer{
+	background-color: #eee;
+	position: sticky;
+	top: 0px;
+}
+
 .invalidWindowSize {
 	border-bottom: 1px dashed gray;
 }
