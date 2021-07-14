@@ -59,10 +59,10 @@ jQuery(document).ready(function () {
     }
 
     const getSizeStr = function (e) {
-        const _unitWord = ["Bytes", "KB", "MB", "GB", "TB"];
         if (0 === e) {
             return "n/a";
         }
+        const _unitWord = ["Bytes", "KB", "MB", "GB", "TB"];
         let _prettyNum = parseInt(Math.floor(Math.log(e) / Math.log(1024)));
         return Math.round(e / Math.pow(1024, _prettyNum)) + " " + _unitWord[_prettyNum];
     }
@@ -105,7 +105,7 @@ jQuery(document).ready(function () {
             let _aTag = $('<a>', { 'href': _image.o, 'title': _caption.a });
             //_aTag.data('fancybox', 'images');
             _aTag.attr('data-fancybox', 'images');
-            _aTag.attr('data-caption', _caption.a);
+            _aTag.attr('data-caption', _data[_idx].caption.fancybox);
             _aTag.attr('data-idx', _idx);
             let _imgTag = $('<img>',
                 {
@@ -145,7 +145,7 @@ jQuery(document).ready(function () {
                         $(this).attr('xpreview', Fake1pxPngData);
                         $(this).attr('caption', _errMsg);
                         _aTag.attr('href', Fake1pxPngData);
-                        _aTag.data('caption', _errMsg);
+                        _aTag.attr('data-caption', _errMsg);
 
                         _data[_idx].caption.fancybox = _errMsg;
                     }
@@ -445,7 +445,9 @@ jQuery(document).ready(function () {
     const _isAndroid = (ua.indexOf('Android') > -1);
     const _isMobile = (ua.indexOf('Mobile') > -1);
     const _isIPad = (ua.indexOf('iPad') > -1);
-    if (_isIPhone || _isAndroid && _isMobile) {
+    const _isSmartPhone = (_isIPhone || _isAndroid && _isMobile);
+    const _isTablet = (_isIPad || _isAndroid) && (!_isSmartPhone);
+    if (_isSmartPhone) {
         // スマートフォン
     } else if (_isIPad || _isAndroid) {
         // タブレット
