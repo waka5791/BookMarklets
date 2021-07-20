@@ -1,4 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja" dir="ltr">
 
 <head>
@@ -31,8 +32,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.1/jquery.fancybox.min.js"></script>
 
     <!-- Colorimazer -->
+    <!--
     <script src="https://colorimazer.tacyniak.fr/js/libs/jquery-colorimazer/jquery.colorimazer.min.js"></script>
-
+-->
     <!-- Exif-js 
     <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
     -->
@@ -60,11 +62,12 @@
 
 <body>
     <pre id="debugConsole"></pre>
-    <main class="container" id="mainContainer" style="display:none;">
+    <main class="container" id="mainContainer">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <div>
-                    <h1 class="titleHeader text-center"><a href="./" style="color : inherit;text-decoration : none;">Rough Drawings</a></h1>
+                    <h1 class="titleHeader text-center"><a href="./"
+                            style="color : inherit;text-decoration : none;">Rough Drawings</a></h1>
                 </div>
                 <div>
                     <p class="lead text-center">鉛筆は素敵な画材</p>
@@ -73,10 +76,9 @@
         </div>
         <div class="row unselectable" id="topMenu">
             <div class="col-sm-12">
-                <button type="button" class="btn  btn-dark btn-sm" id="previewOnOff">
-                    トップビュー
-                </button>
+                <button type="button" class="btn  btn-dark btn-sm" id="previewOnOff">トップビュー</button>
                 <button type="button" class="btn  btn-outline-dark btn-sm" id="fullScreenMode">大きく表示</button>
+                <button type="button" class="btn btn-outline-dark btn-sm" id="zoomOnOff">ルーペ</button>
             </div>
         </div>
 
@@ -109,23 +111,26 @@
                 <div id="exifInfo"></div>
             </div>
 
+            <!--        
             <div class="row unselectable text-center xZoomContainer" id="xzoomOptionContainer">
                 <div class="col-sm-12">
                     <div id="optionMenu">
+                        
                         <button type="button" class="btn btn-outline-dark btn-sm" id="zoomOnOff">
                             ルーペ
                         </button>
+
                         <button type="button" class="btn btn-outline-dark btn-sm" id="grayScaleEffect">
                             グレースケール
                         </button>
-                        <!--
                         <button type="button" class="btn  btn-outline-dark btn-sm" id="exifInfoGet">
                             画像情報
                         </button>
-                        -->
+                        
                     </div>
                 </div>
             </div>
+            -->
         </div>
 
         <div class="row unselectable text-center">
@@ -146,9 +151,9 @@
                 /
                 <a href="http://www.fancyapps.com/fancybox/" target="_blank">fancyBox</a>
                 /
+                <!--
                 <a href="http://colorimazer.tacyniak.fr/" target="_blank">jQuery.Colorimazer</a>
                 /
-                <!--
                 <a href="https://github.com/exif-js/exif-js" target="_blank">exif-js</a>
                 /
                 -->
@@ -159,7 +164,7 @@
                 <a href="https://fonts.google.com/specimen/Stick" target="_blank">Stick</a>
             </div>
             <div class="col-sm-12">&copy; 2021 &middot; わか / a.k.a waka</div>
-            <div class="col-sm-12" id="version">20210714-1</div>
+            <div class="col-sm-12" id="version">20210720-1</div>
         </footer>
     </main>
     <span id='script'></span>
