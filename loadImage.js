@@ -439,106 +439,119 @@ jQuery(document).ready(function () {
         document.title = document.title + ' -debug-';
     }
 
-    const ua = navigator.userAgent;
-    let _isEnableXZoom = false;
-    const _isIPhone = (ua.indexOf('iPhone') > -1);
-    const _isAndroid = (ua.indexOf('Android') > -1);
-    const _isMobile = (ua.indexOf('Mobile') > -1);
-    const _isIPad = (ua.indexOf('iPad') > -1);
-    const _isSmartPhone = (_isIPhone || _isAndroid && _isMobile);
-    const _isTablet = (_isIPad || _isAndroid) && (!_isSmartPhone);
-    if (_isSmartPhone) {
-        // スマートフォン
-    } else if (_isIPad || _isAndroid) {
-        // タブレット
-    } else {
-        // PC
-        _isEnableXZoom = true;
-    }
+    const InitXzoom = function (_isEnableXZoom) {
+            //$('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
+            let timer = false;
+            $(window).scroll(function () {
+                ZoomBoxFrame.draggable('disable');
+                if (timer !== false) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(function () {
+                    ZoomBoxFrame.draggable('enable');
+                }, 1000);
+            });
 
-    if (!_isEnableXZoom) {
-        const _pTag = $('<p>', { 'text': 'パソコン版はルーペ機能が使えます。' });
-        $('footer').append(_pTag);
-    }
+            $('#previewOnOff').on('click', function () {
+                $(this).toggleClass('btn-outline-dark btn-dark');
+                $('#xzoomMainContainer').toggle();
+                let _isVisible = $('#xzoomMainContainer').is(':visible');
 
-    $('.xZoomContainer, #topMenu').toggle(_isEnableXZoom);
-
-    if (false) {
-        _isEnableXZoom = false;
-        LoadImageDataCSV('a.txt');
-    } else {
-        LoadImageData(DataFile);
-    }
-    CreateXzoomContainer(ImageDataAry, _isEnableXZoom);
-    Enhancer(ImageDataAry, _isEnableXZoom);
-
-    $('main').show();
-    if (_isEnableXZoom) {
-        //$('#zoomBox').inviewChecker();// zoomBoxが画面内に収まっているかチェックする
-        let timer = false;
-        $(window).scroll(function () {
-            ZoomBoxFrame.draggable('disable');
-            if (timer !== false) {
-                clearTimeout(timer);
-            }
-            timer = setTimeout(function () {
-                ZoomBoxFrame.draggable('enable');
-            }, 1000);
-        });
-
-        $('#previewOnOff').on('click', function () {
-            $(this).toggleClass('btn-outline-dark btn-dark');
-            $('#xzoomMainContainer').toggle();
-            let _isVisible = $('#xzoomMainContainer').is(':visible');
-            if (_isZoom) {
-                ZoomBoxFrame.toggle(_isVisible);
-            }
-        });
+                $('#zoomOnOff').toggle(_isVisible);
+                if (_isZoom) {
+                    ZoomBoxFrame.toggle(_isVisible);
+                }
+            });
 
 
-        GrayScaleOption();
-        ExifOption();
+            GrayScaleOption();
+            ExifOption();
 
-        ZoomBoxFrame.css({ 'z-index': 99, 'opacity': '0' });
-        ZoomBoxFrame.on({
-            'mouseenter': function () {
-                $(this).css('opacity', '0.5');
-            },
-            'mouseleave': function () {
-                $(this).css('opacity', '0');
-            }
-        });
-        ZoomBoxFrame.draggable({
-            cursor: "grabbing",
-            containment: "body"
-        });
-        ZoomBoxFrame.resizable({
-            minHeight: 100,
-            minWidth: 100,
-            maxHeight: 500,
-            maxWidth: 500
-        });
+            ZoomBoxFrame.css({ 'z-index': 99, 'opacity': '0' });
+            ZoomBoxFrame.on({
+                'mouseenter': function () {
+                    $(this).css('opacity', '0.5');
+                },
+                'mouseleave': function () {
+                    $(this).css('opacity', '0');
+                }
+            });
+            ZoomBoxFrame.draggable({
+                cursor: "grabbing",
+                containment: "body"
+            });
+            ZoomBoxFrame.resizable({
+                minHeight: 100,
+                minWidth: 100,
+                maxHeight: 500,
+                maxWidth: 500
+            });
 
 
-        function ZoomContainerControler() {
-            const _xzoomHeight = '500';
-            let _visible = true;
-            let _windowH = $(window).height();
-            let _windowW = $(window).width();
-            if (_isEnableXZoom) {
-                if (_windowH * 0.7 < _xzoomHeight || _windowW * 0.8 < _xzoomHeight) {
-                    $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
-                    $('#xzoomMainContainer').addClass('invalidWindowSize');
-                } else {
-                    $('#xzoomMainContainer').css({ top: '40px' });
-                    $('#xzoomMainContainer').removeClass('invalidWindowSize');
+            function ZoomContainerControler() {
+                const _xzoomHeight = '500';
+                let _visible = true;
+                let _windowH = $(window).height();
+                let _windowW = $(window).width();
+                if (_isEnableXZoom) {
+                    if (_windowH * 0.7 < _xzoomHeight || _windowW * 0.8 < _xzoomHeight) {
+                        $('#xzoomMainContainer').css({ top: -1 * _windowH / 2 });
+                        $('#xzoomMainContainer').addClass('invalidWindowSize');
+                    } else {
+                        $('#xzoomMainContainer').css({ top: '40px' });
+                        $('#xzoomMainContainer').removeClass('invalidWindowSize');
+                    }
                 }
             }
+
+            $(window).on('resize', function () {
+                ZoomContainerControler();
+            });
+            ZoomContainerControler();
+        
+    }
+    const Main = function () {
+        const ua = navigator.userAgent;
+        let _isEnableXZoom = false;
+        const _isIPhone = (ua.indexOf('iPhone') > -1);
+        const _isAndroid = (ua.indexOf('Android') > -1);
+        const _isMobile = (ua.indexOf('Mobile') > -1);
+        const _isIPad = (ua.indexOf('iPad') > -1);
+        const _isSmartPhone = (_isIPhone || _isAndroid && _isMobile);
+        const _isTablet = (_isIPad || _isAndroid) && (!_isSmartPhone);
+        if (_isSmartPhone) {
+            // スマートフォン
+        } else if (_isIPad || _isAndroid) {
+            // タブレット
+        } else {
+            // PC
+            _isEnableXZoom = true;
         }
 
-        $(window).on('resize', function () {
-            ZoomContainerControler();
-        });
-        ZoomContainerControler();
+        if (!_isEnableXZoom) {
+            const _pTag = $('<p>', { 'text': 'パソコン版はルーペ機能が使えます。' });
+            $('footer').append(_pTag);
+        }
+
+        $('.xZoomContainer, #topMenu').toggle(_isEnableXZoom);
+
+        if (false) {
+            _isEnableXZoom = false;
+            LoadImageDataCSV('a.txt');
+        } else {
+            LoadImageData(DataFile);
+        }
+
+
+
+        CreateXzoomContainer(ImageDataAry, _isEnableXZoom);
+        Enhancer(ImageDataAry, _isEnableXZoom);
+        if (_isEnableXZoom) {
+            InitXzoom();
+        }
     }
+
+    Main();
+
+
 });
