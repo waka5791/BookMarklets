@@ -10,6 +10,10 @@ main {
 	font-family: 'Stick', sans-serif;
 }
 
+.hide{
+	display:none;
+}
+
 div#exifInfo {
 	font-family: 'Times New Roman';
 	color: #555;
